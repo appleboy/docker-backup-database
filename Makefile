@@ -83,6 +83,9 @@ build: $(SERVICE)
 $(SERVICE): $(GOFILES)
 	$(GO) build -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)' -o bin/$@ ./cmd/$(SERVICE)
 
+build_binary:
+	$(GO) build -v -a -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)' -o release/$(GOOS)/$(GOARCH)/$(DOCKER_IMAGE) ./cmd/$(SERVICE)
+
 .PHONY: misspell-check
 misspell-check:
 	@hash misspell > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
@@ -135,6 +138,9 @@ release-copy:
 
 release-check:
 	cd $(DIST)/release/; for file in `find . -type f -name "*"`; do echo "checksumming $${file}" && $(SHASUM) `echo $${file} | sed 's/^..//'` > $${file}.sha256; done;
+
+clean_dist:
+	rm -rf bin dist
 
 clean: clean_dist
 	$(GO) clean -modcache -cache -x -i ./...
