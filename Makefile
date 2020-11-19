@@ -23,20 +23,9 @@ else
 	VERSION ?= $(shell git describe --tags --always | sed 's/-/+/' | sed 's/^v//')
 endif
 
-LDFLAGS ?= -X main.Version=$(VERSION) -X main.BuildDate=$(BUILD_DATE)
+LDFLAGS ?= -X cmd/backup/main.Version=$(VERSION)
 
 all: build
-
-.PHONY: generate
-generate:
-	@which fileb0x > /dev/null; if [ $$? -ne 0 ]; then \
-		$(GO) get -u github.com/UnnoTed/fileb0x; \
-	fi
-	$(GO) generate ./...
-
-.PHONY: vendor
-vendor:
-	GO111MODULE=on $(GO) mod tidy && GO111MODULE=on $(GO) mod vendor
 
 .PHONY: fmt
 fmt:
@@ -50,12 +39,6 @@ fmt-check:
 		echo "$${diff}"; \
 		exit 1; \
 	fi;
-
-embedmd:
-	@hash embedmd > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
-		$(GO) get -u github.com/campoy/embedmd; \
-	fi
-	embedmd -d *.md
 
 vet:
 	$(GO) vet ./...
