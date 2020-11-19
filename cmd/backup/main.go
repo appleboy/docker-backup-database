@@ -1,12 +1,14 @@
 package main
 
 import (
+	"errors"
 	"log"
 	"os"
 	"strconv"
 	"time"
 
 	"backup/pkg/config"
+	"backup/pkg/storage"
 
 	"github.com/joho/godotenv"
 	"github.com/urfave/cli/v2"
@@ -44,6 +46,18 @@ func main() {
 
 func run(cfg *config.Config) cli.ActionFunc {
 	return func(ctx *cli.Context) error {
+		if err := storage.NewEngine(*cfg); err != nil {
+			return err
+		}
+
+		// check bucket exist
+		if exist, err := storage.S3.BucketExists(cfg.Storage.Bucket); !exist {
+			if err != nil {
+				return errors.New("bucket not exist or you don't have permission, " + err.Error())
+			}
+			return errors.New("bucket not exist or you don't have permission")
+		}
+
 		return nil
 	}
 }

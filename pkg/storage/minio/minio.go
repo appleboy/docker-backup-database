@@ -43,6 +43,7 @@ func NewEngine(endpoint, accessID, secretKey string, ssl bool, region string) (*
 	if err != nil {
 		return nil, err
 	}
+
 	client.SetCustomTransport(&http.Transport{
 		MaxIdleConns:       10,
 		IdleConnTimeout:    30 * time.Second,
@@ -88,6 +89,11 @@ func (m *Minio) UploadFile(bucketName, objectName string, content []byte, reader
 	)
 
 	return err
+}
+
+// BucketExists verify if bucket exists and you have permission to access it.
+func (m *Minio) BucketExists(bucketName string) (bool, error) {
+	return m.client.BucketExists(bucketName)
 }
 
 // CreateBucket create bucket

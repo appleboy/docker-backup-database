@@ -1,0 +1,27 @@
+version: '3.7'
+
+# starts 4 docker containers running minio server instances.
+# using nginx reverse proxy, load balancing, you can access
+# it through port 9000.
+services:
+  minio1:
+    image: minio/minio:edge
+    volumes:
+      - data1-1:/data1
+    ports:
+      - 9000:9000
+    environment:
+      MINIO_ACCESS_KEY: 1234567890
+      MINIO_SECRET_KEY: 1234567890
+    command: server /data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+## By default this config uses default local driver,
+## For custom volumes replace with volume driver configuration.
+volumes:
+  data1-1:
+

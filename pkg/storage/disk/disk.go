@@ -84,6 +84,12 @@ func (d *Disk) UploadFile(bucketName, fileName string, content []byte, _ io.Read
 	return ioutil.WriteFile(d.FilePath(bucketName, fileName), content, os.FileMode(0644))
 }
 
+// BucketExists verify if bucket exists and you have permission to access it.
+func (m *Disk) BucketExists(bucketName string) (bool, error) {
+	_, err := os.Stat(bucketName)
+	return !os.IsNotExist(err), err
+}
+
 // CreateBucket create bucket
 func (d *Disk) CreateBucket(bucketName, region string) error {
 	storage := path.Join(d.Path, bucketName)

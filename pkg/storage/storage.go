@@ -23,6 +23,8 @@ type Storage interface {
 	GetFileURL(string, string) string
 	// DownloadFile downloads and saves the object as a file in the local filesystem.
 	DownloadFile(string, string, string) error
+	// BucketExist check object exist. bucket + filename
+	BucketExists(string) (bool, error)
 	// FileExist check object exist. bucket + filename
 	FileExist(string, string) bool
 	// GetContent for storage bucket + filename
@@ -59,7 +61,7 @@ func NewEngine(config config.Config) (err error) {
 		)
 	}
 
-	return S3.CreateBucket(config.Storage.Bucket, config.Storage.Region)
+	return nil
 }
 
 // NewS3Engine return storage interface
