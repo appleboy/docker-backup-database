@@ -31,6 +31,7 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 		&cli.StringFlag{
 			Name:        "database.name",
 			Usage:       "database name",
+			Value:       "postgres",
 			EnvVars:     []string{"PLUGIN_DATABASE_NAME", "INPUT_DATABASE_NAME", "DATABASE_NAME"},
 			Destination: &cfg.Database.Name,
 		},
@@ -47,6 +48,12 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 			Usage:       "database schema",
 			EnvVars:     []string{"PLUGIN_DATABASE_SCHEMA", "INPUT_DATABASE_SCHEMA", "DATABASE_SCHEMA"},
 			Destination: &cfg.Database.Schema,
+		},
+		&cli.StringFlag{
+			Name:        "database.opts",
+			Usage:       "database options",
+			EnvVars:     []string{"PLUGIN_DATABASE_OPTS", "INPUT_DATABASE_OPTS", "DATABASE_OPTS"},
+			Destination: &cfg.Database.Opts,
 		},
 
 		// storage
