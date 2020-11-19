@@ -6,6 +6,8 @@ import (
 	"strconv"
 	"time"
 
+	"backup/pkg/config"
+
 	"github.com/joho/godotenv"
 	"github.com/urfave/cli/v2"
 )
@@ -21,35 +23,18 @@ func main() {
 		_ = godotenv.Load(filename)
 	}
 
-	app := cli.NewApp()
-	app.Name = "Backup Database"
-	app.Usage = "Docker image to periodically backup a your database"
-	app.Copyright = "Copyright (c) " + strconv.Itoa(time.Now().Year()) + " Bo-Yi Wu"
-	app.Authors = []*cli.Author{
-		{
-			Name:  "Bo-Yi Wu",
-			Email: "appleboy.tw@gmail.com",
-		},
+	if _, err := os.Stat("/run/drone/env"); err == nil {
+		godotenv.Overload("/run/drone/env")
 	}
-	app.Action = run
-	app.Version = Version
-	app.Flags = []cli.Flag{
-		&cli.StringSliceFlag{
-			Name:    "host, H",
-			Usage:   "Server host",
-			EnvVars: []string{"PLUGIN_HOST", "SCP_HOST", "SSH_HOST", "HOST", "INPUT_HOST"},
-		},
-		&cli.StringFlag{
-			Name:    "port, P",
-			Value:   "22",
-			Usage:   "Server port, default to 22",
-			EnvVars: []string{"PLUGIN_PORT", "SCP_PORT", "SSH_PORT", "PORT", "INPUT_PORT"},
-		},
-		&cli.StringFlag{
-			Name:    "username, u",
-			Usage:   "Server username",
-			EnvVars: []string{"PLUGIN_USERNAME", "PLUGIN_USER", "SCP_USERNAME", "SSH_USERNAME", "USERNAME", "INPUT_USERNAME"},
-		},
+
+	cfg := &config.Config{}
+	app := &cli.App{
+		Name:      "docker-backup-datavase",
+		Usage:     "Docker image to periodically backup a your database",
+		Copyright: "Copyright (c) " + strconv.Itoa(time.Now().Year()) + " Bo-Yi Wu",
+		Version:   Version,
+		Flags:     settingsFlags(cfg),
+		Action:    run(cfg),
 	}
 
 	if err := app.Run(os.Args); err != nil {
@@ -57,6 +42,8 @@ func main() {
 	}
 }
 
-func run(c *cli.Context) error {
-	return nil
+func run(cfg *config.Config) cli.ActionFunc {
+	return func(ctx *cli.Context) error {
+		return nil
+	}
 }
