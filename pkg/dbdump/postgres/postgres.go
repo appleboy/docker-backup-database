@@ -13,7 +13,6 @@ type Dump struct {
 	Username string
 	Password string
 	Name     string
-	Schema   string
 	Opts     string
 }
 

@@ -43,13 +43,6 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 			Destination: &cfg.Database.Host,
 		},
 		&cli.StringFlag{
-			Name:        "database.schema",
-			Value:       "public",
-			Usage:       "database schema",
-			EnvVars:     []string{"PLUGIN_DATABASE_SCHEMA", "INPUT_DATABASE_SCHEMA", "DATABASE_SCHEMA"},
-			Destination: &cfg.Database.Schema,
-		},
-		&cli.StringFlag{
 			Name:        "database.opts",
 			Usage:       "database options",
 			EnvVars:     []string{"PLUGIN_DATABASE_OPTS", "INPUT_DATABASE_OPTS", "DATABASE_OPTS"},

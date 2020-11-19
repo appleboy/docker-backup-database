@@ -38,7 +38,6 @@ type (
 		Password      string
 		Name          string
 		Host          string
-		Schema        string
 		Opts          string
 		UseSQLite3    bool
 		UseMySQL      bool
