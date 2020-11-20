@@ -43,10 +43,6 @@ func (d Dump) Exec() error {
 	}
 
 	flags := []string{"mysqldump"}
-	if d.Name != "" {
-		flags = append(flags, "-d", d.Name)
-	}
-
 	host, port := getHostPort(d.Host)
 	if host != "" {
 		flags = append(flags, "-h", host)
