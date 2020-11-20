@@ -54,6 +54,7 @@
         image: 'golang:1.15-alpine',
         pull: 'always',
         commands: [
+          'apk add git make',
           'make test',
           'make coverage',
         ],

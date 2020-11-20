@@ -38,6 +38,7 @@ steps:
   pull: always
   image: golang:1.15-alpine
   commands:
+  - apk add git make
   - make test
   - make coverage
   volumes:
