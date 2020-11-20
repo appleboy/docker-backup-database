@@ -1,6 +1,8 @@
 package dbdump
 
 import (
+	"errors"
+
 	"backup/pkg/config"
 	"backup/pkg/dbdump/mysql"
 	"backup/pkg/dbdump/postgres"
@@ -32,5 +34,5 @@ func NewEngine(config config.Config) (backup Backup, err error) {
 		)
 	}
 
-	return nil, nil
+	return nil, errors.New("We don't support Databaser Dirver: " + config.Database.Driver)
 }

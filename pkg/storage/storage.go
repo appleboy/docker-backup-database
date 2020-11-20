@@ -1,6 +1,7 @@
 package storage
 
 import (
+	"errors"
 	"io"
 
 	"backup/pkg/config"
@@ -37,48 +38,23 @@ type Storage interface {
 	SignedURL(string, string, *core.SignedURLOptions) (string, error)
 }
 
-// S3 for storage interface
-var S3 Storage
-
 // NewEngine return storage interface
-func NewEngine(config config.Config) (err error) {
+func NewEngine(config config.Config) (storage Storage, err error) {
 	switch config.Storage.Driver {
 	case "s3":
-		S3, err = minio.NewEngine(
+		return minio.NewEngine(
 			config.Storage.Endpoint,
 			config.Storage.AccessID,
 			config.Storage.SecretKey,
 			config.Storage.SSL,
 			config.Storage.Region,
 		)
-		if err != nil {
-			return err
-		}
 	case "disk":
-		S3 = disk.NewEngine(
+		return disk.NewEngine(
 			config.Server.Addr,
 			config.Storage.Path,
 		)
 	}
 
-	return nil
-}
-
-// NewS3Engine return storage interface
-func NewS3Engine(endPoint, accessID, secretKey string, ssl bool, region string) (Storage, error) {
-	return minio.NewEngine(
-		endPoint,
-		accessID,
-		secretKey,
-		ssl,
-		region,
-	)
-}
-
-// NewDiskEngine return storage interface
-func NewDiskEngine(host, folder string) (Storage, error) {
-	return disk.NewEngine(
-		host,
-		folder,
-	), nil
+	return nil, errors.New("We don't support Storage Dirver: " + config.Storage.Driver)
 }

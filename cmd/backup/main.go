@@ -48,7 +48,8 @@ func main() {
 func run(cfg *config.Config) cli.ActionFunc {
 	return func(ctx *cli.Context) error {
 		// initial storage interface
-		if err := storage.NewEngine(*cfg); err != nil {
+		s3, err := storage.NewEngine(*cfg)
+		if err != nil {
 			return err
 		}
 
@@ -59,7 +60,7 @@ func run(cfg *config.Config) cli.ActionFunc {
 		}
 
 		// check bucket exist
-		if exist, err := storage.S3.BucketExists(cfg.Storage.Bucket); !exist {
+		if exist, err := s3.BucketExists(cfg.Storage.Bucket); !exist {
 			if err != nil {
 				return errors.New("bucket not exist or you don't have permission, " + err.Error())
 			}

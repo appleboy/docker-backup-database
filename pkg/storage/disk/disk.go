@@ -66,11 +66,11 @@ type Disk struct {
 }
 
 // NewEngine struct
-func NewEngine(host, path string) *Disk {
+func NewEngine(host, path string) (*Disk, error) {
 	return &Disk{
 		Host: host,
 		Path: path,
-	}
+	}, nil
 }
 
 // UploadFile to upload file to disk
