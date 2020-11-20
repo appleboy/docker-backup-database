@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"backup/pkg/config"
+	"backup/pkg/dbdump"
 	"backup/pkg/storage"
 
 	"github.com/joho/godotenv"
@@ -46,7 +47,14 @@ func main() {
 
 func run(cfg *config.Config) cli.ActionFunc {
 	return func(ctx *cli.Context) error {
+		// initial storage interface
 		if err := storage.NewEngine(*cfg); err != nil {
+			return err
+		}
+
+		// initial database dump interface
+		backup, err := dbdump.NewEngine(*cfg)
+		if err != nil {
 			return err
 		}
 
@@ -56,6 +64,11 @@ func run(cfg *config.Config) cli.ActionFunc {
 				return errors.New("bucket not exist or you don't have permission, " + err.Error())
 			}
 			return errors.New("bucket not exist or you don't have permission")
+		}
+
+		// backup database
+		if err := backup.Exec(); err != nil {
+			return err
 		}
 
 		return nil

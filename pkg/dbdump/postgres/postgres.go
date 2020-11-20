@@ -83,3 +83,14 @@ func (d Dump) Exec() error {
 func trace(cmd *exec.Cmd) {
 	fmt.Printf("$ %s\n", strings.Join(cmd.Args, " "))
 }
+
+// NewEngine struct
+func NewEngine(host, username, password, name, opts string) (*Dump, error) {
+	return &Dump{
+		Host:     host,
+		Username: username,
+		Password: password,
+		Name:     name,
+		Opts:     opts,
+	}, nil
+}
