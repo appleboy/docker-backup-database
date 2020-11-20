@@ -14,6 +14,7 @@ type Dump struct {
 	Password string
 	Name     string
 	Opts     string
+	DumpName string
 }
 
 func getHostPort(h string) (string, string) {
@@ -65,7 +66,7 @@ func (d Dump) Exec() error {
 	}
 
 	// add gzip command
-	flags = append(flags, "|", "gzip", ">", "dump.sql.gz")
+	flags = append(flags, "|", "gzip", ">", d.DumpName)
 
 	envs := os.Environ()
 	if d.Password != "" {
@@ -88,12 +89,13 @@ func trace(cmd *exec.Cmd) {
 }
 
 // NewEngine struct
-func NewEngine(host, username, password, name, opts string) (*Dump, error) {
+func NewEngine(host, username, password, name, dumpName, opts string) (*Dump, error) {
 	return &Dump{
 		Host:     host,
 		Username: username,
 		Password: password,
 		Name:     name,
 		Opts:     opts,
+		DumpName: dumpName,
 	}, nil
 }

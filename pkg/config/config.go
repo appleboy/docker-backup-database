@@ -18,6 +18,7 @@ type (
 		Bucket    string
 		Path      string
 		Driver    string
+		DumpName  string
 	}
 
 	// Server provides the server configuration.

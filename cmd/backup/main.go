@@ -2,6 +2,7 @@ package main
 
 import (
 	"errors"
+	"io/ioutil"
 	"log"
 	"os"
 	"strconv"
@@ -62,12 +63,22 @@ func run(cfg *config.Config) cli.ActionFunc {
 		// check bucket exist
 		if exist, err := s3.BucketExists(cfg.Storage.Bucket); !exist {
 			if err != nil {
-				return errors.New("bucket not exist or you don't have permission, " + err.Error())
+				return errors.New("bucket not exist or you don't have permission: " + err.Error())
 			}
 			return errors.New("bucket not exist or you don't have permission")
 		}
 
+		if err := backup.Exec(); err != nil {
+			return err
+		}
+
+		// upload file to s3
+		content, err := ioutil.ReadFile(cfg.Storage.DumpName)
+		if err != nil {
+			return errors.New("can't open the gzip file: " + err.Error())
+		}
+
 		// backup database
-		return backup.Exec()
+		return s3.UploadFile(cfg.Storage.Bucket, time.Now().Format("20060102150405")+".sql.gz", content, nil)
 	}
 }

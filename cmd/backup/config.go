@@ -102,5 +102,12 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_STORAGE_SSL", "INPUT_STORAGE_SSL", "STORAGE_SSL"},
 			Destination: &cfg.Storage.SSL,
 		},
+		&cli.StringFlag{
+			Name:        "storage.dump_name",
+			Usage:       "storage dump name",
+			EnvVars:     []string{"PLUGIN_STORAGE_DUMP_NAME", "INPUT_STORAGE_DUMP_NAME", "STORAGE_DUMP_NAME"},
+			Destination: &cfg.Storage.DumpName,
+			Value:       "dump.sql.gz",
+		},
 	}
 }

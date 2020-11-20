@@ -23,6 +23,7 @@ func NewEngine(config config.Config) (backup Backup, err error) {
 			config.Database.Username,
 			config.Database.Password,
 			config.Database.Name,
+			config.Storage.DumpName,
 			config.Database.Opts,
 		)
 	case "mysql":
@@ -31,6 +32,7 @@ func NewEngine(config config.Config) (backup Backup, err error) {
 			config.Database.Username,
 			config.Database.Password,
 			config.Database.Name,
+			config.Storage.DumpName,
 			config.Database.Opts,
 		)
 	}
