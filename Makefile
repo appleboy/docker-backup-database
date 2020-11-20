@@ -9,7 +9,7 @@ TARGETS ?= linux darwin windows
 ARCHS ?= amd64
 BUILD_DATE ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
 GOFILES := $(shell find . -name "*.go" ! -name "generated.*" ! -name "base.go" -type f)
-TAGS ?= sqlite sqlite_unlock_notify json1
+TAGS ?=
 
 ifneq ($(shell uname), Darwin)
 	EXTLDFLAGS = -extldflags "-static" $(null)
