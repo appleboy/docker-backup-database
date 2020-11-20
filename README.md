@@ -16,3 +16,7 @@ This project still **In Progress** now.
 
 * Postgres
 * MySQL
+
+## Usage
+
+First steps: Setup the Minio and Postgres 12 Server using docker-compose command.
