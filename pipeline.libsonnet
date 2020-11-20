@@ -51,10 +51,11 @@
       },
       {
         name: 'test',
-        image: 'golang:1.15-alpine',
+        image: 'golang:1.15',
         pull: 'always',
         commands: [
-          'apk add git make',
+          'make test',
+          'make coverage',
         ],
         volumes: [
           {

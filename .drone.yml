@@ -36,9 +36,10 @@ steps:
 
 - name: test
   pull: always
-  image: golang:1.15-alpine
+  image: golang:1.15
   commands:
-  - apk add git make
+  - make test
+  - make coverage
   volumes:
   - name: gopath
     path: /go
