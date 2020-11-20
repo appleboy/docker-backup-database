@@ -82,7 +82,7 @@
     ],
   },
 
-  build(name, os='linux', arch='amd64'):: {
+  build(name, os='linux', arch='amd64', db='mysql', version='5.6'):: {
     kind: 'pipeline',
     name: os + '-' + arch,
     platform: {
@@ -151,8 +151,8 @@
         settings: {
           daemon_off: 'false',
           auto_tag: true,
-          auto_tag_suffix: os + '-' + arch,
-          dockerfile: 'docker/Dockerfile.' + os + '.' + arch,
+          auto_tag_suffix: db + '-' + version,
+          dockerfile: 'docker/Dockerfile.' + db + '.' + version,
           repo: 'appleboy/' + name,
           cache_from: 'appleboy/' + name,
           username: { 'from_secret': 'docker_username' },
