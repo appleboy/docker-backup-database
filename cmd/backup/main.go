@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"path"
 	"strconv"
 	"time"
 
@@ -78,7 +79,9 @@ func run(cfg *config.Config) cli.ActionFunc {
 			return errors.New("can't open the gzip file: " + err.Error())
 		}
 
+		filePath := path.Join(cfg.Storage.Path, time.Now().Format("20060102150405")+".sql.gz")
+
 		// backup database
-		return s3.UploadFile(cfg.Storage.Bucket, time.Now().Format("20060102150405")+".sql.gz", content, nil)
+		return s3.UploadFile(cfg.Storage.Bucket, filePath, content, nil)
 	}
 }
