@@ -10,15 +10,16 @@ type (
 
 	// Storage config
 	Storage struct {
-		Endpoint  string
-		AccessID  string
-		SecretKey string
-		SSL       bool
-		Region    string
-		Bucket    string
-		Path      string
-		Driver    string
-		DumpName  string
+		Endpoint           string
+		AccessID           string
+		SecretKey          string
+		SSL                bool
+		Region             string
+		Bucket             string
+		Path               string
+		Driver             string
+		DumpName           string
+		InsecureSkipVerify bool
 	}
 
 	// Server provides the server configuration.

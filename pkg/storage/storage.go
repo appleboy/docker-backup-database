@@ -47,6 +47,7 @@ func NewEngine(config config.Config) (storage Storage, err error) {
 			config.Storage.AccessID,
 			config.Storage.SecretKey,
 			config.Storage.SSL,
+			config.Storage.InsecureSkipVerify,
 			config.Storage.Region,
 		)
 	case "disk":

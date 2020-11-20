@@ -24,7 +24,7 @@ type Minio struct {
 }
 
 // NewEngine struct
-func NewEngine(endpoint, accessID, secretKey string, ssl bool, region string) (*Minio, error) {
+func NewEngine(endpoint, accessID, secretKey string, ssl, insecureSkipVerify bool, region string) (*Minio, error) {
 	var client *minio.Client
 	var err error
 	if endpoint == "" {
@@ -44,12 +44,14 @@ func NewEngine(endpoint, accessID, secretKey string, ssl bool, region string) (*
 		return nil, err
 	}
 
-	client.SetCustomTransport(&http.Transport{
-		MaxIdleConns:       10,
-		IdleConnTimeout:    30 * time.Second,
-		DisableCompression: true,
-		TLSClientConfig:    &tls.Config{InsecureSkipVerify: true},
-	})
+	if insecureSkipVerify {
+		client.SetCustomTransport(&http.Transport{
+			MaxIdleConns:       10,
+			IdleConnTimeout:    30 * time.Second,
+			DisableCompression: true,
+			TLSClientConfig:    &tls.Config{InsecureSkipVerify: true},
+		})
+	}
 
 	return &Minio{
 		client: client,

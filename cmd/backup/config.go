@@ -109,5 +109,11 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 			Destination: &cfg.Storage.DumpName,
 			Value:       "dump.sql.gz",
 		},
+		&cli.BoolFlag{
+			Name:        "storage.insecure_skip_verify",
+			Usage:       "storage insecure skip verify",
+			EnvVars:     []string{"PLUGIN_STORAGE_INSECURE_SKIP_VERIFY", "INPUT_STORAGE_INSECURE_SKIP_VERIFY", "STORAGE_INSECURE_SKIP_VERIFY"},
+			Destination: &cfg.Storage.InsecureSkipVerify,
+		},
 	}
 }
