@@ -40,10 +40,6 @@ func (d Dump) Exec() error {
 	}
 
 	flags := []string{}
-	if d.Name != "" {
-		flags = append(flags, "-d", d.Name)
-	}
-
 	host, port := getHostPort(d.Host)
 	if host != "" {
 		flags = append(flags, "-h", host)
