@@ -95,8 +95,8 @@ upx:
 unit-test-coverage:
 	@$(GO) test -v -race -cover -coverprofile coverage.out -tags '$(TAGS)' ./... && echo "\n==>\033[32m Ok\033[m\n" || exit 1
 
-test:
-	@$(GO) test -cover -tags '$(TAGS)' ./... && echo "\n==>\033[32m Ok\033[m\n" || exit 1
+test: fmt-check
+	@$(GO) test -v -cover -coverprofile coverage.txt ./... && echo "\n==>\033[32m Ok\033[m\n" || exit 1
 
 release: release-dirs release-build release-copy release-compress release-check
 

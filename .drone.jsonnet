@@ -11,4 +11,5 @@ local name = 'docker-backup-database';
   pipeline.build(name, 'linux', 'amd64', 'postgres', '11'),
   pipeline.build(name, 'linux', 'amd64', 'postgres', '12'),
   pipeline.build(name, 'linux', 'amd64', 'postgres', '13'),
+  pipeline.release,
 ]
