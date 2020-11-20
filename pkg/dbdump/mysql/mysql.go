@@ -30,9 +30,11 @@ func getHostPort(h string) (string, string) {
 
 // Exec for dump command
 func (d Dump) Exec() error {
+	envs := os.Environ()
 
 	// Print the version number fo rht ecommand line tools
 	cmd := exec.Command("mysqldump", "--version")
+	cmd.Env = envs
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	trace(cmd)
@@ -68,7 +70,6 @@ func (d Dump) Exec() error {
 	// add gzip command
 	flags = append(flags, "|", "gzip", ">", d.DumpName)
 
-	envs := os.Environ()
 	if d.Password != "" {
 		// See the MySQL Environment Variables
 		// ref: https://dev.mysql.com/doc/refman/8.0/en/environment-variables.html
