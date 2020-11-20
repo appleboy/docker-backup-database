@@ -55,7 +55,6 @@
         pull: 'always',
         commands: [
           'make test',
-          'make coverage',
         ],
         volumes: [
           {
