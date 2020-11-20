@@ -55,8 +55,6 @@
         pull: 'always',
         commands: [
           'apk add git make',
-          'make test',
-          'make coverage',
         ],
         volumes: [
           {
