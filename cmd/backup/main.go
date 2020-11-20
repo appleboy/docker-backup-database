@@ -52,11 +52,15 @@ func run(cfg *config.Config) cli.ActionFunc {
 	return func(ctx *cli.Context) error {
 		if cfg.Server.Schedule != "" {
 			c := cron.New()
-			c.AddFunc(cfg.Server.Schedule, func() {
+			if _, err := c.AddFunc(cfg.Server.Schedule, func() {
+				log.Println("start backup database now")
 				if err := backupDB(cfg); err != nil {
 					log.Fatal("can't backup database: " + err.Error())
 				}
-			})
+				log.Println("backup database successfully")
+			}); err != nil {
+				log.Fatal("crontab Schedule error: " + err.Error())
+			}
 			c.Start()
 			select {}
 		}
