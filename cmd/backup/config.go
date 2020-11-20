@@ -126,7 +126,7 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 		&cli.StringFlag{
 			Name:        "time.location",
 			Usage:       "By default, all interpretation and scheduling is done in the machine's local time zone (time.Local). You can specify a different time zone on construction",
-			EnvVars:     []string{"PLUGIN_TIME_SCHEDULE", "INPUT_TIME_SCHEDULE", "TIME_SCHEDULE"},
+			EnvVars:     []string{"PLUGIN_TIME_LOCATION", "INPUT_TIME_LOCATION", "TIME_LOCATION"},
 			Destination: &cfg.Server.Location,
 		},
 	}
