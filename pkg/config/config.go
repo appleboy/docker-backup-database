@@ -32,6 +32,7 @@ type (
 		Root     string
 		Debug    bool
 		Schedule string
+		Location string
 	}
 
 	// Database config

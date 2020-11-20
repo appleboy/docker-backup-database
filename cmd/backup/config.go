@@ -118,10 +118,16 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 
 		// SCHEDULE
 		&cli.StringFlag{
-			Name:        "schedule",
-			Usage:       "cron spec format",
-			EnvVars:     []string{"PLUGIN_SCHEDULE", "INPUT_SCHEDULE", "SCHEDULE"},
+			Name:        "time.schedule",
+			Usage:       "You may use one of several pre-defined schedules in place of a cron expression.",
+			EnvVars:     []string{"PLUGIN_TIME_SCHEDULE", "INPUT_TIME_SCHEDULE", "TIME_SCHEDULE"},
 			Destination: &cfg.Server.Schedule,
+		},
+		&cli.StringFlag{
+			Name:        "time.location",
+			Usage:       "By default, all interpretation and scheduling is done in the machine's local time zone (time.Local). You can specify a different time zone on construction",
+			EnvVars:     []string{"PLUGIN_TIME_SCHEDULE", "INPUT_TIME_SCHEDULE", "TIME_SCHEDULE"},
+			Destination: &cfg.Server.Location,
 		},
 	}
 }

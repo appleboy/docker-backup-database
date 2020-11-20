@@ -52,6 +52,14 @@ func run(cfg *config.Config) cli.ActionFunc {
 	return func(ctx *cli.Context) error {
 		if cfg.Server.Schedule != "" {
 			c := cron.New()
+			if cfg.Server.Location != "" {
+				loc, err := time.LoadLocation(cfg.Server.Location)
+				if err != nil {
+					log.Fatal("crontab location error: " + err.Error())
+				}
+				c = cron.New(cron.WithLocation(loc))
+			}
+
 			if _, err := c.AddFunc(cfg.Server.Schedule, func() {
 				log.Println("start backup database now")
 				if err := backupDB(cfg); err != nil {
