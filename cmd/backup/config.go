@@ -120,7 +120,7 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 		&cli.StringFlag{
 			Name:        "schedule",
 			Usage:       "cron spec format",
-			EnvVars:     []string{"PLUGIN_schedule", "INPUT_schedule", "schedule"},
+			EnvVars:     []string{"PLUGIN_SCHEDULE", "INPUT_SCHEDULE", "SCHEDULE"},
 			Destination: &cfg.Server.Schedule,
 		},
 	}
