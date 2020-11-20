@@ -134,7 +134,8 @@ Cron schedule to run periodic backups.
       DATABASE_NAME: db
       DATABASE_OPTS:
 
-      SCHEDULE: @daily
+      TIME_SCHEDULE: @daily
+      TIME_LOCATION: Asia/Taipei
 ```
 
 Each line of a crontab file represents a job, and looks like this:
