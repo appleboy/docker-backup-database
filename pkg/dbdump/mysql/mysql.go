@@ -17,9 +17,9 @@ type Dump struct {
 }
 
 func getHostPort(h string) (string, string) {
-	host, port := "localhost", "3306"
 	data := strings.Split(h, ":")
-	host = data[0]
+	host := data[0]
+	port := "3306"
 	if len(data) > 1 {
 		port = data[1]
 	}
