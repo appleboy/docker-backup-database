@@ -39,7 +39,7 @@ func (d Dump) Exec() error {
 		return err
 	}
 
-	flags := []string{}
+	flags := []string{"mysqldump"}
 	if d.Name != "" {
 		flags = append(flags, "-d", d.Name)
 	}
@@ -64,17 +64,17 @@ func (d Dump) Exec() error {
 		flags = append(flags, d.Name)
 	}
 
-	// gzip > dump.sql.gz
+	// add gzip command
 	flags = append(flags, "|", "gzip", ">", "dump.sql.gz")
 
-	envs := []string{}
+	envs := os.Environ()
 	if d.Password != "" {
 		// See the MySQL Environment Variables
 		// ref: https://dev.mysql.com/doc/refman/8.0/en/environment-variables.html
 		envs = append(envs, fmt.Sprintf("MYSQL_PWD=%s", d.Password))
 	}
 
-	cmd = exec.Command("mysqldump", flags...)
+	cmd = exec.Command("bash", "-c", strings.Join(flags, " "))
 	cmd.Env = envs
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

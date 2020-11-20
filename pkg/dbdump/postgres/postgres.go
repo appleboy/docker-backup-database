@@ -39,7 +39,7 @@ func (d Dump) Exec() error {
 		return err
 	}
 
-	flags := []string{}
+	flags := []string{"pg_dump"}
 	host, port := getHostPort(d.Host)
 	if host != "" {
 		flags = append(flags, "-h", host)
@@ -60,15 +60,15 @@ func (d Dump) Exec() error {
 		flags = append(flags, d.Name)
 	}
 
-	// gzip > dump.sql.gz
+	// add gzip command
 	flags = append(flags, "|", "gzip", ">", "dump.sql.gz")
 
-	envs := []string{}
+	envs := os.Environ()
 	if d.Password != "" {
 		envs = append(envs, fmt.Sprintf("PGPASSWORD=%s", d.Password))
 	}
 
-	cmd = exec.Command("pg_dump", flags...)
+	cmd = exec.Command("bash", "-c", strings.Join(flags, " "))
 	cmd.Env = envs
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
