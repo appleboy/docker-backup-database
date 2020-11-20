@@ -8,14 +8,10 @@
 
 Docker image to periodically backup a your database (MySQL or Postgres) to Local Disk or S3 ([AWS S3](https://aws.amazon.com/free/storage/s3) or [Minio](https://min.io/)).
 
-## Importance
-
-This project still **In Progress** now.
-
 ## Support Database
 
-* Postgres
-* MySQL
+* Postgres (9, 10, 11, 12, 13)
+* MySQL (5.6, 5.7, 8)
 
 ## Usage
 
