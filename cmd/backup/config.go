@@ -60,13 +60,13 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 		&cli.StringFlag{
 			Name:        "storage.access_id",
 			Usage:       "storage access id",
-			EnvVars:     []string{"PLUGIN_STORAGE_ACCESSID", "INPUT_STORAGE_ACCESSID", "STORAGE_ACCESSID"},
+			EnvVars:     []string{"PLUGIN_ACCESS_KEY_ID", "INPUT_ACCESS_KEY_ID", "ACCESS_KEY_ID"},
 			Destination: &cfg.Storage.AccessID,
 		},
 		&cli.StringFlag{
 			Name:        "storage.secret_key",
 			Usage:       "storage secret key",
-			EnvVars:     []string{"PLUGIN_STORAGE_SECRETKEY", "INPUT_STORAGE_SECRETKEY", "STORAGE_SECRETKEY"},
+			EnvVars:     []string{"PLUGIN_SECRET_ACCESS_KEY", "INPUT_SECRET_ACCESS_KEY", "SECRET_ACCESS_KEY"},
 			Destination: &cfg.Storage.SecretKey,
 		},
 		&cli.StringFlag{
