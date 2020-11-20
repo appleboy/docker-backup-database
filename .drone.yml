@@ -58,7 +58,7 @@ volumes:
 
 ---
 kind: pipeline
-name: linux-amd64
+name: linux-amd64-mysql-5.6
 
 platform:
   os: linux
@@ -137,7 +137,7 @@ depends_on:
 
 ---
 kind: pipeline
-name: linux-amd64
+name: linux-amd64-mysql-5.7
 
 platform:
   os: linux
@@ -216,7 +216,7 @@ depends_on:
 
 ---
 kind: pipeline
-name: linux-amd64
+name: linux-amd64-mysql-8
 
 platform:
   os: linux
@@ -295,7 +295,7 @@ depends_on:
 
 ---
 kind: pipeline
-name: linux-amd64
+name: linux-amd64-postgres-9
 
 platform:
   os: linux
@@ -374,7 +374,7 @@ depends_on:
 
 ---
 kind: pipeline
-name: linux-amd64
+name: linux-amd64-postgres-10
 
 platform:
   os: linux
@@ -453,7 +453,7 @@ depends_on:
 
 ---
 kind: pipeline
-name: linux-amd64
+name: linux-amd64-postgres-11
 
 platform:
   os: linux
@@ -532,7 +532,7 @@ depends_on:
 
 ---
 kind: pipeline
-name: linux-amd64
+name: linux-amd64-postgres-12
 
 platform:
   os: linux
@@ -611,7 +611,7 @@ depends_on:
 
 ---
 kind: pipeline
-name: linux-amd64
+name: linux-amd64-postgres-13
 
 platform:
   os: linux

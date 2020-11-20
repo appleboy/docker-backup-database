@@ -84,7 +84,7 @@
 
   build(name, os='linux', arch='amd64', db='mysql', version='5.6'):: {
     kind: 'pipeline',
-    name: os + '-' + arch,
+    name: os + '-' + arch + '-' + db + '-' + version,
     platform: {
       os: os,
       arch: arch,
