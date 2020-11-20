@@ -1,0 +1,58 @@
+---
+kind: pipeline
+name: testing
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: vet
+  pull: always
+  image: golang:1.15
+  commands:
+  - make vet
+  volumes:
+  - name: gopath
+    path: /go
+
+- name: lint
+  pull: always
+  image: golang:1.15
+  commands:
+  - make lint
+  volumes:
+  - name: gopath
+    path: /go
+
+- name: misspell
+  pull: always
+  image: golang:1.15
+  commands:
+  - make misspell-check
+  volumes:
+  - name: gopath
+    path: /go
+
+- name: test
+  pull: always
+  image: golang:1.15-alpine
+  commands:
+  - make test
+  - make coverage
+  volumes:
+  - name: gopath
+    path: /go
+
+- name: codecov
+  pull: always
+  image: robertstettner/drone-codecov
+  settings:
+    token:
+      from_secret: codecov_token
+
+volumes:
+- name: gopath
+  temp: {}
+
+...
