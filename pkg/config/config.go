@@ -24,13 +24,14 @@ type (
 
 	// Server provides the server configuration.
 	Server struct {
-		Addr  string
-		Host  string
-		Proto string
-		Port  string
-		Pprof bool
-		Root  string
-		Debug bool
+		Addr     string
+		Host     string
+		Proto    string
+		Port     string
+		Pprof    bool
+		Root     string
+		Debug    bool
+		Schedule string
 	}
 
 	// Database config

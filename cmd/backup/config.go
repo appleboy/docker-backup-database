@@ -115,5 +115,13 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_STORAGE_INSECURE_SKIP_VERIFY", "INPUT_STORAGE_INSECURE_SKIP_VERIFY", "STORAGE_INSECURE_SKIP_VERIFY"},
 			Destination: &cfg.Storage.InsecureSkipVerify,
 		},
+
+		// SCHEDULE
+		&cli.StringFlag{
+			Name:        "schedule",
+			Usage:       "cron spec format",
+			EnvVars:     []string{"PLUGIN_schedule", "INPUT_schedule", "schedule"},
+			Destination: &cfg.Server.Schedule,
+		},
 	}
 }
