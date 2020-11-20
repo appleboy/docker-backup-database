@@ -68,10 +68,6 @@ func run(cfg *config.Config) cli.ActionFunc {
 		}
 
 		// backup database
-		if err := backup.Exec(); err != nil {
-			return err
-		}
-
-		return nil
+		return backup.Exec()
 	}
 }

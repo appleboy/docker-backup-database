@@ -8,6 +8,7 @@ import (
 	"backup/pkg/dbdump/postgres"
 )
 
+// Backup database interface
 type Backup interface {
 	// Exec backup database
 	Exec() error

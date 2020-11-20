@@ -27,6 +27,7 @@ func getHostPort(h string) (string, string) {
 	return host, port
 }
 
+// Exec for dump command
 func (d Dump) Exec() error {
 
 	// Print the version number fo rht ecommand line tools

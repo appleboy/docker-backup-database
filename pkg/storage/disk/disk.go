@@ -85,7 +85,7 @@ func (d *Disk) UploadFile(bucketName, fileName string, content []byte, _ io.Read
 }
 
 // BucketExists verify if bucket exists and you have permission to access it.
-func (m *Disk) BucketExists(bucketName string) (bool, error) {
+func (d *Disk) BucketExists(bucketName string) (bool, error) {
 	_, err := os.Stat(bucketName)
 	return !os.IsNotExist(err), err
 }
