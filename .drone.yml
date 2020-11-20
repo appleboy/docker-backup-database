@@ -43,13 +43,6 @@ steps:
   - name: gopath
     path: /go
 
-- name: codecov
-  pull: always
-  image: robertstettner/drone-codecov
-  settings:
-    token:
-      from_secret: codecov_token
-
 volumes:
 - name: gopath
   temp: {}

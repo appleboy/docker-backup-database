@@ -63,14 +63,14 @@
           },
         ],
       },
-      {
-        name: 'codecov',
-        image: 'robertstettner/drone-codecov',
-        pull: 'always',
-        settings: {
-          token: { 'from_secret': 'codecov_token' },
-        },
-      },
+      // {
+      //   name: 'codecov',
+      //   image: 'robertstettner/drone-codecov',
+      //   pull: 'always',
+      //   settings: {
+      //     token: { 'from_secret': 'codecov_token' },
+      //   },
+      // },
     ],
     volumes: [
       {
