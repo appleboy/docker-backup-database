@@ -107,7 +107,7 @@ mc ilm ls minio/test
 
 ![mc ilm](./images/mc_ilm.png)
 
-Cron schedule to run periodic backups.
+Cron schedule to run periodic backups. See the `TIME_SCHEDULE` and `TIME_LOCATION`
 
 ```yaml
   backup_mysql:
