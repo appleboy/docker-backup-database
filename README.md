@@ -176,7 +176,7 @@ Entry                  | Description                                | Equivalent
 
 ## Envionment Variables
 
-### Dataabse Section
+### Database Section
 
 * DATABASE_DRIVER - support `postgres` or `mysql`. default is `postgres`
 * DATABASE_USERNAME - database username
