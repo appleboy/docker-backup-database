@@ -173,3 +173,31 @@ Entry                  | Description                                | Equivalent
 @daily (or @midnight)  | Run once a day, midnight                   | 0 0 * * *
 @hourly                | Run once an hour, beginning of hour        | 0 * * * *
 ```
+
+## Envionment Variables
+
+### Dataabse Section
+
+* DATABASE_DRIVER - support `postgres` or `mysql`. default is `postgres`
+* DATABASE_USERNAME - database username
+* DATABASE_PASSWORD - database password
+* DATABASE_NAME - database name
+* DATABASE_HOST - database host
+* DATABASE_OPTS - see the `pg_dump` or `mylsqdump` command
+
+### Storage Section
+
+* STORAGE_DRIVER - support `s3` or `disk`. default is `s3`
+* ACCESS_KEY_ID - Minio or AWS S3 ACCESS Key ID
+* SECRET_ACCESS_KEY - Minio or AWS S3 SECRET ACCESS Key
+* STORAGE_ENDPOINT - S3 Endpoint. default is `s3.amazonaws.com`
+* STORAGE_BUCKET - S3 bucket name
+* STORAGE_REGION - S3 Region. default is `ap-northeast-1`
+* STORAGE_PATH - backup folder path in bucket. default is `backup` and all dump file will save in `bucket/path` directory
+* STORAGE_SSL - default is `false`
+* STORAGE_INSECURE_SKIP_VERIFY - default is `false`
+
+### Schedule Section
+
+* TIME_SCHEDULE - You may use one of several pre-defined schedules in place of a cron expression.
+* TIME_LOCATION - By default, all interpretation and scheduling is done in the machine's local time zone (time.Local). You can specify a different time zone on construction.
