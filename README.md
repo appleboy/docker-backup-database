@@ -10,8 +10,18 @@ Docker image to periodically backup a your database (MySQL or Postgres) to Local
 
 ## Support Database
 
+see the [docker hub page](https://hub.docker.com/repository/docker/appleboy/docker-backup-database).
+
 * Postgres (9, 10, 11, 12, 13)
+  * 9: appleboy/docker-backup-database:postgres-9
+  * 10: appleboy/docker-backup-database:postgres-10
+  * 11: appleboy/docker-backup-database:postgres-11
+  * 12: appleboy/docker-backup-database:postgres-12
+  * 13: appleboy/docker-backup-database:postgres-13
 * MySQL (5.6, 5.7, 8)
+  * 5.6: appleboy/docker-backup-database:mysql-5.6
+  * 5.7: appleboy/docker-backup-database:mysql-5.7
+  * 8: appleboy/docker-backup-database:mysql-8
 
 ## Usage
 
