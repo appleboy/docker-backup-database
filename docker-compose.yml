@@ -118,7 +118,7 @@ services:
       DATABASE_NAME: db
       DATABASE_OPTS:
 
-      TIME_SCHEDULE: 54 07 * * *
+      TIME_SCHEDULE: @daily
       TIME_LOCATION: Asia/Taipei
 
 ## By default this config uses default local driver,
