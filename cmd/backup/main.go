@@ -107,7 +107,12 @@ func backupDB(cfg *config.Config) error {
 		return errors.New("can't open the gzip file: " + err.Error())
 	}
 
-	filePath := path.Join(cfg.Storage.Path, time.Now().Format("20060102150405")+".sql.gz")
+	filename := time.Now().Format("20060102150405")
+	if cfg.Server.Location != "" {
+		loc, _ := time.LoadLocation(cfg.Server.Location)
+		filename = time.Now().In(loc).Format("20060102150405")
+	}
+	filePath := path.Join(cfg.Storage.Path, filename+".sql.gz")
 
 	// backup database
 	return s3.UploadFile(cfg.Storage.Bucket, filePath, content, nil)
