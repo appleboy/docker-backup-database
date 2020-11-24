@@ -36,7 +36,7 @@ func main() {
 	cfg := &config.Config{}
 	app := &cli.App{
 		Name:      "docker-backup-datavase",
-		Usage:     "Docker image to periodically backup a your database",
+		Usage:     "Docker image to periodically backup your database",
 		Copyright: "Copyright (c) " + strconv.Itoa(time.Now().Year()) + " Bo-Yi Wu",
 		Version:   Version,
 		Flags:     settingsFlags(cfg),
