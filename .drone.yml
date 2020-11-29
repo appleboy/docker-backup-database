@@ -60,7 +60,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -72,7 +72,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -120,8 +120,8 @@ steps:
 trigger:
   ref:
   - refs/heads/master
-  - "refs/pull/**"
-  - "refs/tags/**"
+  - refs/pull/**
+  - refs/tags/**
 
 depends_on:
 - testing
@@ -139,7 +139,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -151,7 +151,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -199,8 +199,8 @@ steps:
 trigger:
   ref:
   - refs/heads/master
-  - "refs/pull/**"
-  - "refs/tags/**"
+  - refs/pull/**
+  - refs/tags/**
 
 depends_on:
 - testing
@@ -218,7 +218,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -230,7 +230,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -278,8 +278,8 @@ steps:
 trigger:
   ref:
   - refs/heads/master
-  - "refs/pull/**"
-  - "refs/tags/**"
+  - refs/pull/**
+  - refs/tags/**
 
 depends_on:
 - testing
@@ -297,7 +297,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -309,7 +309,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -357,8 +357,8 @@ steps:
 trigger:
   ref:
   - refs/heads/master
-  - "refs/pull/**"
-  - "refs/tags/**"
+  - refs/pull/**
+  - refs/tags/**
 
 depends_on:
 - testing
@@ -376,7 +376,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -388,7 +388,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -436,8 +436,8 @@ steps:
 trigger:
   ref:
   - refs/heads/master
-  - "refs/pull/**"
-  - "refs/tags/**"
+  - refs/pull/**
+  - refs/tags/**
 
 depends_on:
 - testing
@@ -455,7 +455,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -467,7 +467,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -515,8 +515,8 @@ steps:
 trigger:
   ref:
   - refs/heads/master
-  - "refs/pull/**"
-  - "refs/tags/**"
+  - refs/pull/**
+  - refs/tags/**
 
 depends_on:
 - testing
@@ -534,7 +534,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -546,7 +546,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -594,8 +594,8 @@ steps:
 trigger:
   ref:
   - refs/heads/master
-  - "refs/pull/**"
-  - "refs/tags/**"
+  - refs/pull/**
+  - refs/tags/**
 
 depends_on:
 - testing
@@ -613,7 +613,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -625,7 +625,7 @@ steps:
   pull: always
   image: golang:1.15
   commands:
-  - "go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup"
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
   environment:
     CGO_ENABLED: 0
   when:
@@ -673,8 +673,324 @@ steps:
 trigger:
   ref:
   - refs/heads/master
-  - "refs/pull/**"
-  - "refs/tags/**"
+  - refs/pull/**
+  - refs/tags/**
+
+depends_on:
+- testing
+
+---
+kind: pipeline
+name: linux-amd64-mongo-3.6
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build-push
+  pull: always
+  image: golang:1.15
+  commands:
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
+  environment:
+    CGO_ENABLED: 0
+  when:
+    event:
+      exclude:
+      - tag
+
+- name: build-tag
+  pull: always
+  image: golang:1.15
+  commands:
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
+  environment:
+    CGO_ENABLED: 0
+  when:
+    event:
+    - tag
+
+- name: executable
+  pull: always
+  image: golang:1.15
+  commands:
+  - ./release/linux/amd64/docker-backup-database --help
+
+- name: dryrun
+  pull: always
+  image: plugins/docker:linux-amd64
+  settings:
+    cache_from: appleboy/docker-backup-database
+    dockerfile: docker/Dockerfile.linux.amd64
+    dry_run: true
+    repo: appleboy/docker-backup-database
+    tags: linux-amd64
+  when:
+    event:
+    - pull_request
+
+- name: publish
+  pull: always
+  image: plugins/docker:linux-amd64
+  settings:
+    auto_tag: true
+    auto_tag_suffix: mongo-3.6
+    cache_from: appleboy/docker-backup-database
+    daemon_off: false
+    dockerfile: docker/Dockerfile.mongo.3.6
+    password:
+      from_secret: docker_password
+    repo: appleboy/docker-backup-database
+    username:
+      from_secret: docker_username
+  when:
+    event:
+      exclude:
+      - pull_request
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/pull/**
+  - refs/tags/**
+
+depends_on:
+- testing
+
+---
+kind: pipeline
+name: linux-amd64-mongo-4
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build-push
+  pull: always
+  image: golang:1.15
+  commands:
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
+  environment:
+    CGO_ENABLED: 0
+  when:
+    event:
+      exclude:
+      - tag
+
+- name: build-tag
+  pull: always
+  image: golang:1.15
+  commands:
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
+  environment:
+    CGO_ENABLED: 0
+  when:
+    event:
+    - tag
+
+- name: executable
+  pull: always
+  image: golang:1.15
+  commands:
+  - ./release/linux/amd64/docker-backup-database --help
+
+- name: dryrun
+  pull: always
+  image: plugins/docker:linux-amd64
+  settings:
+    cache_from: appleboy/docker-backup-database
+    dockerfile: docker/Dockerfile.linux.amd64
+    dry_run: true
+    repo: appleboy/docker-backup-database
+    tags: linux-amd64
+  when:
+    event:
+    - pull_request
+
+- name: publish
+  pull: always
+  image: plugins/docker:linux-amd64
+  settings:
+    auto_tag: true
+    auto_tag_suffix: mongo-4
+    cache_from: appleboy/docker-backup-database
+    daemon_off: false
+    dockerfile: docker/Dockerfile.mongo.4
+    password:
+      from_secret: docker_password
+    repo: appleboy/docker-backup-database
+    username:
+      from_secret: docker_username
+  when:
+    event:
+      exclude:
+      - pull_request
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/pull/**
+  - refs/tags/**
+
+depends_on:
+- testing
+
+---
+kind: pipeline
+name: linux-amd64-mongo-4.2
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build-push
+  pull: always
+  image: golang:1.15
+  commands:
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
+  environment:
+    CGO_ENABLED: 0
+  when:
+    event:
+      exclude:
+      - tag
+
+- name: build-tag
+  pull: always
+  image: golang:1.15
+  commands:
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
+  environment:
+    CGO_ENABLED: 0
+  when:
+    event:
+    - tag
+
+- name: executable
+  pull: always
+  image: golang:1.15
+  commands:
+  - ./release/linux/amd64/docker-backup-database --help
+
+- name: dryrun
+  pull: always
+  image: plugins/docker:linux-amd64
+  settings:
+    cache_from: appleboy/docker-backup-database
+    dockerfile: docker/Dockerfile.linux.amd64
+    dry_run: true
+    repo: appleboy/docker-backup-database
+    tags: linux-amd64
+  when:
+    event:
+    - pull_request
+
+- name: publish
+  pull: always
+  image: plugins/docker:linux-amd64
+  settings:
+    auto_tag: true
+    auto_tag_suffix: mongo-4.2
+    cache_from: appleboy/docker-backup-database
+    daemon_off: false
+    dockerfile: docker/Dockerfile.mongo.4.2
+    password:
+      from_secret: docker_password
+    repo: appleboy/docker-backup-database
+    username:
+      from_secret: docker_username
+  when:
+    event:
+      exclude:
+      - pull_request
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/pull/**
+  - refs/tags/**
+
+depends_on:
+- testing
+
+---
+kind: pipeline
+name: linux-amd64-mongo-4.4
+
+platform:
+  os: linux
+  arch: amd64
+
+steps:
+- name: build-push
+  pull: always
+  image: golang:1.15
+  commands:
+  - go build -v -ldflags '-X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
+  environment:
+    CGO_ENABLED: 0
+  when:
+    event:
+      exclude:
+      - tag
+
+- name: build-tag
+  pull: always
+  image: golang:1.15
+  commands:
+  - go build -v -ldflags '-X main.version=${DRONE_TAG##v} -X main.build=${DRONE_BUILD_NUMBER}' -a -o release/linux/amd64/docker-backup-database ./cmd/backup
+  environment:
+    CGO_ENABLED: 0
+  when:
+    event:
+    - tag
+
+- name: executable
+  pull: always
+  image: golang:1.15
+  commands:
+  - ./release/linux/amd64/docker-backup-database --help
+
+- name: dryrun
+  pull: always
+  image: plugins/docker:linux-amd64
+  settings:
+    cache_from: appleboy/docker-backup-database
+    dockerfile: docker/Dockerfile.linux.amd64
+    dry_run: true
+    repo: appleboy/docker-backup-database
+    tags: linux-amd64
+  when:
+    event:
+    - pull_request
+
+- name: publish
+  pull: always
+  image: plugins/docker:linux-amd64
+  settings:
+    auto_tag: true
+    auto_tag_suffix: mongo-4.4
+    cache_from: appleboy/docker-backup-database
+    daemon_off: false
+    dockerfile: docker/Dockerfile.mongo.4.4
+    password:
+      from_secret: docker_password
+    repo: appleboy/docker-backup-database
+    username:
+      from_secret: docker_username
+  when:
+    event:
+      exclude:
+      - pull_request
+
+trigger:
+  ref:
+  - refs/heads/master
+  - refs/pull/**
+  - refs/tags/**
 
 depends_on:
 - testing
@@ -704,14 +1020,14 @@ steps:
     api_key:
       from_secret: github_release_api_key
     files:
-    - "dist/release/*"
+    - dist/release/*
   when:
     event:
     - tag
 
 trigger:
   ref:
-  - "refs/tags/**"
+  - refs/tags/**
 
 depends_on:
 - testing
