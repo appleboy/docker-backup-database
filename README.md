@@ -22,6 +22,11 @@ see the [docker hub page](https://hub.docker.com/repository/docker/appleboy/dock
   * 5.6: appleboy/docker-backup-database:mysql-5.6
   * 5.7: appleboy/docker-backup-database:mysql-5.7
   * 8: appleboy/docker-backup-database:mysql-8
+* Mongo (3.6, 4, 4.2, 4.4)
+  * 3.6: appleboy/docker-backup-database:mongo-3.6
+  * 4.0: appleboy/docker-backup-database:mongo-4.0
+  * 4.2: appleboy/docker-backup-database:mongo-4.2
+  * 4.4: appleboy/docker-backup-database:mongo-4.4
 
 ## Usage
 
@@ -210,4 +215,4 @@ Entry                  | Description                                | Equivalent
 ### Schedule Section
 
 * TIME_SCHEDULE - You may use one of several pre-defined schedules in place of a cron expression.
-* TIME_LOCATION - By default, all interpretation and scheduling is done in the machine's local time zone (time.Local). You can specify a different time zone on construction.
+* TIME_LOCATION - By default, all interpretation and scheduling is done in the machine's local time zone. You can specify a different time zone on construction.
