@@ -55,21 +55,20 @@ func (d Dump) Exec() error {
 		flags = append(flags, "-u", d.Username)
 	}
 
-	if d.Opts != "" {
-		flags = append(flags, d.Opts)
+	if d.Password != "" {
+		flags = append(flags, "-p", d.Password)
 	}
 
 	if d.Name != "" {
-		flags = append(flags, d.Name)
+		flags = append(flags, "-d", d.Name)
 	}
 
-	// add gzip command
-	flags = append(flags, "|", "gzip", ">", d.DumpName)
+	// Compresses the output. If mongodump outputs to the dump directory, the new feature compresses the individual files. The files have the suffix .gz.
+	flags = append(flags, "--gzip")
+	flags = append(flags, "--archive="+d.DumpName)
 
-	if d.Password != "" {
-		// See the MySQL Environment Variables
-		// ref: https://dev.mysql.com/doc/refman/8.0/en/environment-variables.html
-		envs = append(envs, fmt.Sprintf("MYSQL_PWD=%s", d.Password))
+	if d.Opts != "" {
+		flags = append(flags, d.Opts)
 	}
 
 	cmd = exec.Command("bash", "-c", strings.Join(flags, " "))
