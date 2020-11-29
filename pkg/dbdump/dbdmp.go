@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"backup/pkg/config"
+	"backup/pkg/dbdump/mongo"
 	"backup/pkg/dbdump/mysql"
 	"backup/pkg/dbdump/postgres"
 )
@@ -28,6 +29,15 @@ func NewEngine(config config.Config) (backup Backup, err error) {
 		)
 	case "mysql":
 		return mysql.NewEngine(
+			config.Database.Host,
+			config.Database.Username,
+			config.Database.Password,
+			config.Database.Name,
+			config.Storage.DumpName,
+			config.Database.Opts,
+		)
+	case "mongo":
+		return mongo.NewEngine(
 			config.Database.Host,
 			config.Database.Username,
 			config.Database.Password,
