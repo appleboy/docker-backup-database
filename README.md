@@ -36,6 +36,7 @@ First steps: Setup the Minio and Postgres 12 Server using docker-compose command
 services:
   minio:
     image: minio/minio:edge
+    restart: always
     volumes:
       - data1-1:/data1
     ports:
@@ -149,7 +150,7 @@ Cron schedule to run periodic backups. See the `TIME_SCHEDULE` and `TIME_LOCATIO
       DATABASE_NAME: db
       DATABASE_OPTS:
 
-      TIME_SCHEDULE: @daily
+      TIME_SCHEDULE: "@daily"
       TIME_LOCATION: Asia/Taipei
 ```
 
