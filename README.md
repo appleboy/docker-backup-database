@@ -194,12 +194,12 @@ Entry                  | Description                                | Equivalent
 
 ### Database Section
 
-* DATABASE_DRIVER - support `postgres` or `mysql`. default is `postgres`
+* DATABASE_DRIVER - support `postgres`, `mysql` or `mongo`. default is `postgres`
 * DATABASE_USERNAME - database username
 * DATABASE_PASSWORD - database password
 * DATABASE_NAME - database name
 * DATABASE_HOST - database host
-* DATABASE_OPTS - see the `pg_dump` or `mylsqdump` command
+* DATABASE_OPTS - see the `pg_dump`, `mylsqdump` or `mongodump` command
 
 ### Storage Section
 
