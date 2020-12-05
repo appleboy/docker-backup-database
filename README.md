@@ -6,7 +6,7 @@
 [![Go Report Card](https://goreportcard.com/badge/github.com/appleboy/docker-backup-database)](https://goreportcard.com/report/github.com/appleboy/docker-backup-database)
 [![Docker Pulls](https://img.shields.io/docker/pulls/appleboy/docker-backup-database.svg)](https://hub.docker.com/r/appleboy/docker-backup-database/)
 
-Docker image to periodically backup a your database (MySQL or Postgres) to Local Disk or S3 ([AWS S3](https://aws.amazon.com/free/storage/s3) or [Minio](https://min.io/)).
+Docker image to periodically backup a your database (MySQL,  Postgres or MongoDB) to Local Disk or S3 ([AWS S3](https://aws.amazon.com/free/storage/s3) or [Minio](https://min.io/)).
 
 ## Support Database
 
