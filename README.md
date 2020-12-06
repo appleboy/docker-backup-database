@@ -199,7 +199,7 @@ Entry                  | Description                                | Equivalent
 * DATABASE_PASSWORD - database password
 * DATABASE_NAME - database name
 * DATABASE_HOST - database host
-* DATABASE_OPTS - see the `pg_dump`, `mylsqdump` or `mongodump` command
+* DATABASE_OPTS - see the `pg_dump`, `mysqldump` or `mongodump` command
 
 ### Storage Section
 
