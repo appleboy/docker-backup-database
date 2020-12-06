@@ -19,7 +19,7 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 		&cli.StringFlag{
 			Name:        "database.username",
 			Usage:       "database username",
-			EnvVars:     []string{"PLUGIN_DATABASE_USERNAME", "INPUT_DATABASEUSERNAME", "DATABASE_USERNAME"},
+			EnvVars:     []string{"PLUGIN_DATABASE_USERNAME", "INPUT_DATABASE_USERNAME", "DATABASE_USERNAME"},
 			Destination: &cfg.Database.Username,
 		},
 		&cli.StringFlag{
