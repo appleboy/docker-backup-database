@@ -50,6 +50,7 @@ type (
 		UsePostgreSQL bool
 	}
 
+	// File struct
 	File struct {
 		Prefix string
 		Format string
