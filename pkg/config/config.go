@@ -6,6 +6,7 @@ type (
 		Server   Server
 		Database Database
 		Storage  Storage
+		File     File
 	}
 
 	// Storage config
@@ -47,6 +48,12 @@ type (
 		UseMySQL      bool
 		UseMSSQL      bool
 		UsePostgreSQL bool
+	}
+
+	File struct {
+		Prefix string
+		Format string
+		Suffix string
 	}
 )
 

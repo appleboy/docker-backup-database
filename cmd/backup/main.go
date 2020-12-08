@@ -7,6 +7,7 @@ import (
 	"os"
 	"path"
 	"strconv"
+	"strings"
 	"time"
 
 	"backup/pkg/config"
@@ -107,12 +108,25 @@ func backupDB(cfg *config.Config) error {
 		return errors.New("can't open the gzip file: " + err.Error())
 	}
 
-	filename := time.Now().Format("20060102150405")
+	filename := []string{}
+	if cfg.File.Prefix == "" {
+		cfg.File.Prefix = cfg.Database.Driver
+	}
+
+	filename = append(filename, cfg.File.Prefix)
+
+	defaultFormat := time.Now().Format(cfg.File.Format)
 	if cfg.Server.Location != "" {
 		loc, _ := time.LoadLocation(cfg.Server.Location)
-		filename = time.Now().In(loc).Format("20060102150405")
+		defaultFormat = time.Now().In(loc).Format("20060102150405")
 	}
-	filePath := path.Join(cfg.Storage.Path, filename+".sql.gz")
+
+	filename = append(filename, defaultFormat)
+	if cfg.File.Suffix != "" {
+		filename = append(filename, cfg.File.Suffix)
+	}
+
+	filePath := path.Join(cfg.Storage.Path, strings.Join(filename, "-")+".sql.gz")
 
 	// backup database
 	return s3.UploadFile(cfg.Storage.Bucket, filePath, content, nil)

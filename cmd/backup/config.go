@@ -129,5 +129,26 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_TIME_LOCATION", "INPUT_TIME_LOCATION", "TIME_LOCATION"},
 			Destination: &cfg.Server.Location,
 		},
+
+		// File Format
+		&cli.StringFlag{
+			Name:        "file.prefix",
+			Usage:       "prefix name of file",
+			EnvVars:     []string{"PLUGIN_FILE_PREFIX", "INPUT_FILE_PREFIX", "FILE_PREFIX"},
+			Destination: &cfg.File.Prefix,
+		},
+		&cli.StringFlag{
+			Name:        "file.suffix",
+			Usage:       "suffix name of file",
+			EnvVars:     []string{"PLUGIN_FILE_SUFFIX", "INPUT_FILE_SUFFIX", "FILE_SUFFIX"},
+			Destination: &cfg.File.Suffix,
+		},
+		&cli.StringFlag{
+			Name:        "file.format",
+			Usage:       "format of file",
+			Value:       "20060102150405",
+			EnvVars:     []string{"PLUGIN_FILE_FORMAT", "INPUT_FILE_FORMAT", "FILE_FORMAT"},
+			Destination: &cfg.File.Format,
+		},
 	}
 }
