@@ -145,7 +145,7 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 		},
 		&cli.StringFlag{
 			Name:        "file.format",
-			Usage:       "format of file",
+			Usage:       "Format string of file, default is 20060102150405",
 			Value:       "20060102150405",
 			EnvVars:     []string{"PLUGIN_FILE_FORMAT", "INPUT_FILE_FORMAT", "FILE_FORMAT"},
 			Destination: &cfg.File.Format,

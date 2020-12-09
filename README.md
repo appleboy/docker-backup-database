@@ -217,3 +217,9 @@ Entry                  | Description                                | Equivalent
 
 * TIME_SCHEDULE - You may use one of several pre-defined schedules in place of a cron expression.
 * TIME_LOCATION - By default, all interpretation and scheduling is done in the machine's local time zone. You can specify a different time zone on construction.
+
+## File Section
+
+* FILE_PREFIX - Prefix name of file, default is `storage driver` name.
+* FILE_SUFFIX - Suffix name of file
+* FILE_FORMAT - Format string of file, default is `20060102150405`.
