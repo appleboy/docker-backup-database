@@ -133,7 +133,7 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 		// File Format
 		&cli.StringFlag{
 			Name:        "file.prefix",
-			Usage:       "prefix name of file",
+			Usage:       "prefix name of file, default is storage driver name.",
 			EnvVars:     []string{"PLUGIN_FILE_PREFIX", "INPUT_FILE_PREFIX", "FILE_PREFIX"},
 			Destination: &cfg.File.Prefix,
 		},
