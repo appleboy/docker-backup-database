@@ -8,6 +8,8 @@
 
 Docker image to periodically backup a your database (MySQL,  Postgres or MongoDB) to Local Disk or S3 ([AWS S3](https://aws.amazon.com/free/storage/s3) or [Minio](https://min.io/)).
 
+[中文 Youtube 影片](https://www.youtube.com/watch?v=nsiKKSy5fUA)
+
 ## Support Database
 
 see the [docker hub page](https://hub.docker.com/repository/docker/appleboy/docker-backup-database).
