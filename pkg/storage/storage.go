@@ -39,23 +39,23 @@ type Storage interface {
 }
 
 // NewEngine return storage interface
-func NewEngine(config config.Config) (storage Storage, err error) {
-	switch config.Storage.Driver {
+func NewEngine(cfg config.Config) (storage Storage, err error) {
+	switch cfg.Storage.Driver {
 	case "s3":
 		return minio.NewEngine(
-			config.Storage.Endpoint,
-			config.Storage.AccessID,
-			config.Storage.SecretKey,
-			config.Storage.SSL,
-			config.Storage.InsecureSkipVerify,
-			config.Storage.Region,
+			cfg.Storage.Endpoint,
+			cfg.Storage.AccessID,
+			cfg.Storage.SecretKey,
+			cfg.Storage.SSL,
+			cfg.Storage.InsecureSkipVerify,
+			cfg.Storage.Region,
 		)
 	case "disk":
 		return disk.NewEngine(
-			config.Server.Addr,
-			config.Storage.Path,
+			cfg.Server.Addr,
+			cfg.Storage.Path,
 		)
 	}
 
-	return nil, errors.New("We don't support Storage Dirver: " + config.Storage.Driver)
+	return nil, errors.New("We don't support Storage Dirver: " + cfg.Storage.Driver)
 }

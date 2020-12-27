@@ -16,36 +16,36 @@ type Backup interface {
 }
 
 // NewEngine return storage interface
-func NewEngine(config config.Config) (backup Backup, err error) {
-	switch config.Database.Driver {
+func NewEngine(cfg config.Config) (backup Backup, err error) {
+	switch cfg.Database.Driver {
 	case "postgres":
 		return postgres.NewEngine(
-			config.Database.Host,
-			config.Database.Username,
-			config.Database.Password,
-			config.Database.Name,
-			config.Storage.DumpName,
-			config.Database.Opts,
+			cfg.Database.Host,
+			cfg.Database.Username,
+			cfg.Database.Password,
+			cfg.Database.Name,
+			cfg.Storage.DumpName,
+			cfg.Database.Opts,
 		)
 	case "mysql":
 		return mysql.NewEngine(
-			config.Database.Host,
-			config.Database.Username,
-			config.Database.Password,
-			config.Database.Name,
-			config.Storage.DumpName,
-			config.Database.Opts,
+			cfg.Database.Host,
+			cfg.Database.Username,
+			cfg.Database.Password,
+			cfg.Database.Name,
+			cfg.Storage.DumpName,
+			cfg.Database.Opts,
 		)
 	case "mongo":
 		return mongo.NewEngine(
-			config.Database.Host,
-			config.Database.Username,
-			config.Database.Password,
-			config.Database.Name,
-			config.Storage.DumpName,
-			config.Database.Opts,
+			cfg.Database.Host,
+			cfg.Database.Username,
+			cfg.Database.Password,
+			cfg.Database.Name,
+			cfg.Storage.DumpName,
+			cfg.Database.Opts,
 		)
 	}
 
-	return nil, errors.New("We don't support Databaser Dirver: " + config.Database.Driver)
+	return nil, errors.New("We don't support Databaser Dirver: " + cfg.Database.Driver)
 }
