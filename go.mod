@@ -1,4 +1,4 @@
-module backup
+module github.com/appleboy/docker-backup-database
 
 go 1.15
 

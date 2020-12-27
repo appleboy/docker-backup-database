@@ -11,7 +11,7 @@ import (
 	"os"
 	"time"
 
-	"backup/pkg/storage/core"
+	"github.com/appleboy/docker-backup-database/pkg/storage/core"
 
 	"github.com/h2non/filetype"
 	"github.com/minio/minio-go/v6"

@@ -1,7 +1,7 @@
 package main
 
 import (
-	"backup/pkg/config"
+	"github.com/appleboy/docker-backup-database/pkg/config"
 
 	"github.com/urfave/cli/v2"
 )

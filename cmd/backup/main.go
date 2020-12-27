@@ -10,9 +10,9 @@ import (
 	"strings"
 	"time"
 
-	"backup/pkg/config"
-	"backup/pkg/dbdump"
-	"backup/pkg/storage"
+	"github.com/appleboy/docker-backup-database/pkg/config"
+	"github.com/appleboy/docker-backup-database/pkg/dbdump"
+	"github.com/appleboy/docker-backup-database/pkg/storage"
 
 	"github.com/joho/godotenv"
 	"github.com/robfig/cron/v3"

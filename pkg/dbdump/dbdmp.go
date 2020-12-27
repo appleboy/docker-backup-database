@@ -3,10 +3,10 @@ package dbdump
 import (
 	"errors"
 
-	"backup/pkg/config"
-	"backup/pkg/dbdump/mongo"
-	"backup/pkg/dbdump/mysql"
-	"backup/pkg/dbdump/postgres"
+	"github.com/appleboy/docker-backup-database/pkg/config"
+	"github.com/appleboy/docker-backup-database/pkg/dbdump/mongo"
+	"github.com/appleboy/docker-backup-database/pkg/dbdump/mysql"
+	"github.com/appleboy/docker-backup-database/pkg/dbdump/postgres"
 )
 
 // Backup database interface

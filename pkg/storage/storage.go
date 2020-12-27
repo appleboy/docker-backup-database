@@ -4,10 +4,10 @@ import (
 	"errors"
 	"io"
 
-	"backup/pkg/config"
-	"backup/pkg/storage/core"
-	"backup/pkg/storage/disk"
-	"backup/pkg/storage/minio"
+	"github.com/appleboy/docker-backup-database/pkg/config"
+	"github.com/appleboy/docker-backup-database/pkg/storage/core"
+	"github.com/appleboy/docker-backup-database/pkg/storage/disk"
+	"github.com/appleboy/docker-backup-database/pkg/storage/minio"
 )
 
 // Storage for s3 and disk

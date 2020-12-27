@@ -9,7 +9,7 @@ import (
 	"path"
 	"path/filepath"
 
-	"backup/pkg/storage/core"
+	"github.com/appleboy/docker-backup-database/pkg/storage/core"
 )
 
 // BUFFERSIZE copy file buffer size
