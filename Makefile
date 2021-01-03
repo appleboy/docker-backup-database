@@ -1,7 +1,6 @@
 DIST := dist
 SERVICE ?= backup
 
-DOCKER_ACCOUNT := appleboy
 GOFMT ?= gofmt "-s"
 SHASUM ?= shasum -a 256
 GO ?= go
@@ -23,7 +22,7 @@ else
 	VERSION ?= $(shell git describe --tags --always | sed 's/-/+/' | sed 's/^v//')
 endif
 
-LDFLAGS ?= -X cmd/backup/main.Version=$(VERSION)
+LDFLAGS ?= -X main.Version=$(VERSION)
 
 all: build
 
