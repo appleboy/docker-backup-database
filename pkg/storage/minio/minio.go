@@ -162,7 +162,6 @@ func (m *Minio) CopyFile(srcBucket, srcPath, destBucket, destPath string) error 
 // FileExist check object exist. bucket + filename
 func (m *Minio) FileExist(bucketName, fileName string) bool {
 	_, err := m.client.StatObject(bucketName, fileName, minio.StatObjectOptions{})
-
 	if err != nil {
 		errResponse := minio.ToErrorResponse(err)
 		if errResponse.Code == "AccessDenied" {

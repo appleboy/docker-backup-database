@@ -81,7 +81,7 @@ func (d *Disk) UploadFile(bucketName, fileName string, content []byte, _ io.Read
 	if err := os.MkdirAll(storage, os.ModePerm); err != nil {
 		return nil
 	}
-	return ioutil.WriteFile(d.FilePath(bucketName, fileName), content, os.FileMode(0644))
+	return ioutil.WriteFile(d.FilePath(bucketName, fileName), content, os.FileMode(0o644))
 }
 
 // BucketExists verify if bucket exists and you have permission to access it.
