@@ -5,9 +5,11 @@ import (
 	"io/ioutil"
 	"log"
 	"os"
+	"os/signal"
 	"path"
 	"strconv"
 	"strings"
+	"syscall"
 	"time"
 
 	"github.com/appleboy/docker-backup-database/pkg/config"
@@ -71,7 +73,11 @@ func run(cfg *config.Config) cli.ActionFunc {
 				log.Fatal("crontab Schedule error: " + err.Error())
 			}
 			c.Start()
-			select {}
+			// Register shutdown signal notifications
+			sig := make(chan os.Signal, 1)
+			signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+			<-sig
+			log.Println("shutting down backup service")
 		}
 		return backupDB(cfg)
 	}

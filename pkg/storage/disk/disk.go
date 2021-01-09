@@ -15,7 +15,7 @@ import (
 // BUFFERSIZE copy file buffer size
 var BUFFERSIZE = 1000
 
-func copy(src, dst string, BUFFERSIZE int64) error {
+func copyFiles(src, dst string, BUFFERSIZE int64) error {
 	sourceFileStat, err := os.Stat(src)
 	if err != nil {
 		return err
@@ -91,7 +91,7 @@ func (d *Disk) BucketExists(bucketName string) (bool, error) {
 }
 
 // CreateBucket create bucket
-func (d *Disk) CreateBucket(bucketName, region string) error {
+func (d *Disk) CreateBucket(bucketName, _ string) error {
 	storage := path.Join(d.Path, bucketName)
 	if err := os.MkdirAll(storage, os.ModePerm); err != nil {
 		return nil
@@ -126,7 +126,7 @@ func (d *Disk) GetFileURL(bucketName, fileName string) string {
 }
 
 // DownloadFile downloads and saves the object as a file in the local filesystem.
-func (d *Disk) DownloadFile(bucketName, fileName, target string) error {
+func (d *Disk) DownloadFile(_, _, _ string) error {
 	return nil
 }
 
@@ -139,7 +139,7 @@ func (d *Disk) GetContent(bucketName, fileName string) ([]byte, error) {
 func (d *Disk) CopyFile(srcBucketName, srcFile, destBucketName, destFile string) error {
 	src := path.Join(d.Path, srcBucketName, srcFile)
 	dest := path.Join(d.Path, destBucketName, destFile)
-	return copy(src, dest, int64(BUFFERSIZE))
+	return copyFiles(src, dest, int64(BUFFERSIZE))
 }
 
 // FileExist check object exist. bucket + filename
@@ -156,6 +156,6 @@ func (d *Disk) Client() interface{} {
 }
 
 // SignedURL support signed URL
-func (d *Disk) SignedURL(bucketName, filename string, opts *core.SignedURLOptions) (string, error) {
+func (d *Disk) SignedURL(bucketName, filename string, _ *core.SignedURLOptions) (string, error) {
 	return d.GetFileURL(bucketName, filename), nil
 }
