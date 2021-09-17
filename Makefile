@@ -1,14 +1,14 @@
 DIST := dist
 SERVICE ?= backup
-
-GOFMT ?= gofmt "-s"
+GOFMT ?= gofumpt -l -s
 SHASUM ?= shasum -a 256
 GO ?= go
 TARGETS ?= linux darwin windows
 ARCHS ?= amd64
 BUILD_DATE ?= $(shell date -u +"%Y-%m-%dT%H:%M:%SZ")
-GOFILES := $(shell find . -name "*.go" ! -name "generated.*" ! -name "base.go" -type f)
+GOFILES := $(shell find . -name "*.go" -type f)
 TAGS ?=
+GOPATH ?= $(shell $(GO) env GOPATH)
 
 ifneq ($(shell uname), Darwin)
 	EXTLDFLAGS = -extldflags "-static" $(null)
@@ -22,16 +22,30 @@ else
 	VERSION ?= $(shell git describe --tags --always | sed 's/-/+/' | sed 's/^v//')
 endif
 
-LDFLAGS ?= -X main.Version=$(VERSION)
+LDFLAGS ?= -X cmd/$(SERVICE)/main.Version=$(VERSION) -X cmd/$(SERVICE)/main.BuildDate=$(BUILD_DATE)
 
 all: build
 
+.PHONY: generate
+generate:
+	$(GO) generate ./...
+
+.PHONY: vendor
+vendor:
+	GO111MODULE=on $(GO) mod tidy && GO111MODULE=on $(GO) mod vendor
+
 .PHONY: fmt
 fmt:
+	@hash gofumpt > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
+		$(GO) get -u mvdan.cc/gofumpt; \
+	fi
 	$(GOFMT) -w $(GOFILES)
 
 .PHONY: fmt-check
 fmt-check:
+	@hash gofumpt > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
+		$(GO) get -u mvdan.cc/gofumpt; \
+	fi
 	@diff=$$($(GOFMT) -d $(GOFILES)); \
 	if [ -n "$$diff" ]; then \
 		echo "Please run 'make fmt' and commit the result:"; \
@@ -39,23 +53,18 @@ fmt-check:
 		exit 1; \
 	fi;
 
-vet:
-	$(GO) vet ./...
+embedmd:
+	@hash embedmd > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
+		$(GO) get -u github.com/campoy/embedmd; \
+	fi
+	embedmd -d *.md
 
 .PHONY: lint
 lint:
-	@hash revive > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
-		$(GO) get -u github.com/mgechev/revive; \
-	fi
-	revive -config .revive.toml ./... || exit 1
-
-.PHONY: golangci-lint
-golangci-lint:
 	@hash golangci-lint > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
-		export BINARY="golangci-lint"; \
-		curl -sfL https://install.goreleaser.com/github.com/golangci/golangci-lint.sh | sh -s -- -b $(GOPATH)/bin v1.18.0; \
+		curl -sSfL https://raw.githubusercontent.com/golangci/golangci-lint/master/install.sh | sh -s -- -b $(go env GOPATH)/bin v1.42.1; \
 	fi
-	golangci-lint run --deadline=3m
+	golangci-lint run -v --deadline=3m
 
 install: $(GOFILES)
 	$(GO) install -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)'
@@ -65,37 +74,12 @@ build: $(SERVICE)
 $(SERVICE): $(GOFILES)
 	$(GO) build -v -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)' -o bin/$@ ./cmd/$(SERVICE)
 
-build_binary:
-	$(GO) build -v -a -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)' -o release/$(GOOS)/$(GOARCH)/$(DOCKER_IMAGE) ./cmd/$(SERVICE)
-
-.PHONY: misspell-check
-misspell-check:
-	@hash misspell > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
-		$(GO) get -u github.com/client9/misspell/cmd/misspell; \
-	fi
-	misspell -error $(GOFILES)
-
-.PHONY: misspell
-misspell:
-	@hash misspell > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
-		$(GO) get -u github.com/client9/misspell/cmd/misspell; \
-	fi
-	misspell -w $(GOFILES)
-
-upx:
-	@hash upx > /dev/null 2>&1; if [ $$? -ne 0 ]; then \
-		echo "Missing upx command"; \
-		exit 1; \
-	fi
-	upx -o bin/$(SERVICE)-small bin/$(SERVICE)
-	mv bin/$(SERVICE)-small bin/$(SERVICE)
-
 .PHONY: unit-test-coverage
 unit-test-coverage:
 	@$(GO) test -v -race -cover -coverprofile coverage.out -tags '$(TAGS)' ./... && echo "\n==>\033[32m Ok\033[m\n" || exit 1
 
-test: fmt-check
-	@$(GO) test -v -cover -coverprofile coverage.txt ./... && echo "\n==>\033[32m Ok\033[m\n" || exit 1
+test:
+	@$(GO) test -cover -tags '$(TAGS)' ./... && echo "\n==>\033[32m Ok\033[m\n" || exit 1
 
 release: release-dirs release-build release-copy release-compress release-check
 
@@ -121,8 +105,11 @@ release-copy:
 release-check:
 	cd $(DIST)/release/; for file in `find . -type f -name "*"`; do echo "checksumming $${file}" && $(SHASUM) `echo $${file} | sed 's/^..//'` > $${file}.sha256; done;
 
+build_binary:
+	$(GO) build -v -a -tags '$(TAGS)' -ldflags '$(EXTLDFLAGS)-s -w $(LDFLAGS)' -o release/$(GOOS)/$(GOARCH)/$(SERVICE) ./cmd/$(SERVICE)
+
 clean_dist:
-	rm -rf bin dist
+	rm -rf bin release
 
 clean: clean_dist
 	$(GO) clean -modcache -cache -x -i ./...

@@ -57,16 +57,3 @@ type (
 		Suffix string
 	}
 )
-
-func configureDatabase(c *Config) {
-	switch c.Database.Driver {
-	case "postgres":
-		c.Database.UsePostgreSQL = true
-	case "mssql":
-		c.Database.UseMSSQL = true
-	}
-}
-
-func defaultAddress(c *Config) {
-	c.Server.Addr = c.Server.Proto + "://" + c.Server.Host
-}
