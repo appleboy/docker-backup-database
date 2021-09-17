@@ -9,7 +9,7 @@
     steps: [
       {
         name: 'vet',
-        image: 'golang:1.15',
+        image: 'golang:1.17',
         pull: 'always',
         commands: [
           'make vet',
@@ -23,7 +23,7 @@
       },
       {
         name: 'lint',
-        image: 'golang:1.15',
+        image: 'golang:1.17',
         pull: 'always',
         commands: [
           'make lint',
@@ -37,7 +37,7 @@
       },
       {
         name: 'misspell',
-        image: 'golang:1.15',
+        image: 'golang:1.17',
         pull: 'always',
         commands: [
           'make misspell-check',
@@ -51,7 +51,7 @@
       },
       {
         name: 'test',
-        image: 'golang:1.15',
+        image: 'golang:1.17',
         pull: 'always',
         commands: [
           'make test',
@@ -90,7 +90,7 @@
     steps: [
       {
         name: 'build-push',
-        image: 'golang:1.15',
+        image: 'golang:1.17',
         pull: 'always',
         environment: {
           CGO_ENABLED: '0',
@@ -106,7 +106,7 @@
       },
       {
         name: 'build-tag',
-        image: 'golang:1.15',
+        image: 'golang:1.17',
         pull: 'always',
         environment: {
           CGO_ENABLED: '0',
@@ -120,7 +120,7 @@
       },
       {
         name: 'executable',
-        image: 'golang:1.15',
+        image: 'golang:1.17',
         pull: 'always',
         commands: [
           './release/' + os + '/' + arch + '/' + name + ' --help',
@@ -185,7 +185,7 @@
     steps: [
       {
         name: 'build-all-binary',
-        image: 'golang:1.15',
+        image: 'golang:1.17',
         pull: 'always',
         commands: [
           'make release'
