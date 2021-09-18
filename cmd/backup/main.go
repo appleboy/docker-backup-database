@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"errors"
 	"io/ioutil"
 	"log"
@@ -14,8 +15,8 @@ import (
 
 	"github.com/appleboy/docker-backup-database/pkg/config"
 	"github.com/appleboy/docker-backup-database/pkg/dbdump"
-	"github.com/appleboy/docker-backup-database/pkg/storage"
 
+	"github.com/appleboy/go-storage"
 	"github.com/joho/godotenv"
 	"github.com/robfig/cron/v3"
 	"github.com/urfave/cli/v2"
@@ -84,8 +85,19 @@ func run(cfg *config.Config) cli.ActionFunc {
 }
 
 func backupDB(cfg *config.Config) error {
+	ctx := context.Background()
 	// initial storage interface
-	s3, err := storage.NewEngine(*cfg)
+	s3, err := storage.NewEngine(storage.Config{
+		Endpoint:  cfg.Storage.Endpoint,
+		AccessID:  cfg.Storage.AccessID,
+		SecretKey: cfg.Storage.SecretKey,
+		SSL:       cfg.Storage.SSL,
+		Region:    cfg.Storage.Region,
+		Path:      cfg.Storage.Path,
+		Bucket:    cfg.Storage.Bucket,
+		Addr:      cfg.Server.Addr,
+		Driver:    cfg.Storage.Driver,
+	})
 	if err != nil {
 		return err
 	}
@@ -97,11 +109,15 @@ func backupDB(cfg *config.Config) error {
 	}
 
 	// check bucket exist
-	if exist, err := s3.BucketExists(cfg.Storage.Bucket); !exist {
+	if exist, err := s3.BucketExists(ctx, cfg.Storage.Bucket); !exist {
 		if err != nil {
 			return errors.New("bucket not exist or you don't have permission: " + err.Error())
 		}
-		return errors.New("bucket not exist or you don't have permission")
+
+		// create new bucket
+		if err := s3.CreateBucket(ctx, cfg.Storage.Bucket, cfg.Storage.Region); err != nil {
+			return errors.New("can't create bucket: " + err.Error())
+		}
 	}
 
 	if err := backup.Exec(); err != nil {
@@ -135,5 +151,5 @@ func backupDB(cfg *config.Config) error {
 	filePath := path.Join(cfg.Storage.Path, strings.Join(filename, "-")+".sql.gz")
 
 	// backup database
-	return s3.UploadFile(cfg.Storage.Bucket, filePath, content, nil)
+	return s3.UploadFile(ctx, cfg.Storage.Bucket, filePath, content, nil)
 }
