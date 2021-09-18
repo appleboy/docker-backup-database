@@ -72,7 +72,7 @@ func (d Dump) Exec() error {
 		envs = append(envs, fmt.Sprintf("MYSQL_PWD=%s", d.Password))
 	}
 
-	cmd = exec.Command("bash", "-c", strings.Join(flags, " "))
+	cmd = exec.Command("bash", "-c", strings.Join(flags, " ")) //nolint:gosec
 	cmd.Env = envs
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

@@ -63,7 +63,8 @@ func (d Dump) Exec() error {
 		flags = append(flags, "-d", d.Name)
 	}
 
-	// Compresses the output. If mongodump outputs to the dump directory, the new feature compresses the individual files. The files have the suffix .gz.
+	// Compresses the output. If mongodump outputs to the dump directory,
+	// the new feature compresses the individual files. The files have the suffix .gz.
 	flags = append(flags, "--gzip")
 	flags = append(flags, "--archive="+d.DumpName)
 
@@ -71,7 +72,7 @@ func (d Dump) Exec() error {
 		flags = append(flags, d.Opts)
 	}
 
-	cmd = exec.Command("bash", "-c", strings.Join(flags, " "))
+	cmd = exec.Command("bash", "-c", strings.Join(flags, " ")) //nolint:gosec
 	cmd.Env = envs
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr

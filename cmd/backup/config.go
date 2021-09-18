@@ -110,9 +110,13 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 			Value:       "dump.sql.gz",
 		},
 		&cli.BoolFlag{
-			Name:        "storage.insecure_skip_verify",
-			Usage:       "storage insecure skip verify",
-			EnvVars:     []string{"PLUGIN_STORAGE_INSECURE_SKIP_VERIFY", "INPUT_STORAGE_INSECURE_SKIP_VERIFY", "STORAGE_INSECURE_SKIP_VERIFY"},
+			Name:  "storage.insecure_skip_verify",
+			Usage: "storage insecure skip verify",
+			EnvVars: []string{
+				"PLUGIN_STORAGE_INSECURE_SKIP_VERIFY",
+				"INPUT_STORAGE_INSECURE_SKIP_VERIFY",
+				"STORAGE_INSECURE_SKIP_VERIFY",
+			},
 			Destination: &cfg.Storage.InsecureSkipVerify,
 		},
 
@@ -124,8 +128,9 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 			Destination: &cfg.Server.Schedule,
 		},
 		&cli.StringFlag{
-			Name:        "time.location",
-			Usage:       "By default, all interpretation and scheduling is done in the machine's local time zone (time.Local). You can specify a different time zone on construction",
+			Name: "time.location",
+			Usage: "By default, all interpretation and scheduling is done in the machine's local time zone (time.Local). " +
+				"You can specify a different time zone on construction",
 			EnvVars:     []string{"PLUGIN_TIME_LOCATION", "INPUT_TIME_LOCATION", "TIME_LOCATION"},
 			Destination: &cfg.Server.Location,
 		},
