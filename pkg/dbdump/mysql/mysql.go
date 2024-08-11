@@ -1,6 +1,7 @@
 package mysql
 
 import (
+	"context"
 	"fmt"
 	"os"
 	"os/exec"
@@ -29,7 +30,7 @@ func getHostPort(h string) (string, string) {
 }
 
 // Exec for dump command
-func (d Dump) Exec() error {
+func (d Dump) Exec(ctx context.Context) error {
 	envs := os.Environ()
 
 	// Print the version number fo rht ecommand line tools

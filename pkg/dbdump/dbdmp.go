@@ -1,6 +1,7 @@
 package dbdump
 
 import (
+	"context"
 	"errors"
 
 	"github.com/appleboy/docker-backup-database/pkg/config"
@@ -12,7 +13,7 @@ import (
 // Backup database interface
 type Backup interface {
 	// Exec backup database
-	Exec() error
+	Exec(context.Context) error
 }
 
 // NewEngine return storage interface

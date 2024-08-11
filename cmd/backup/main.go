@@ -66,7 +66,7 @@ func run(cfg *config.Config) cli.ActionFunc {
 
 			if _, err := c.AddFunc(cfg.Server.Schedule, func() {
 				log.Println("start backup database now")
-				if err := backupDB(cfg); err != nil {
+				if err := backupDB(ctx.Context, cfg); err != nil {
 					log.Fatal("can't backup database: " + err.Error())
 				}
 				log.Println("backup database successfully")
@@ -80,12 +80,11 @@ func run(cfg *config.Config) cli.ActionFunc {
 			<-sig
 			log.Println("shutting down backup service")
 		}
-		return backupDB(cfg)
+		return backupDB(ctx.Context, cfg)
 	}
 }
 
-func backupDB(cfg *config.Config) error {
-	ctx := context.Background()
+func backupDB(ctx context.Context, cfg *config.Config) error {
 	// initial storage interface
 	s3, err := storage.NewEngine(storage.Config{
 		Endpoint:  cfg.Storage.Endpoint,
@@ -120,7 +119,7 @@ func backupDB(cfg *config.Config) error {
 		}
 	}
 
-	if err := backup.Exec(); err != nil {
+	if err := backup.Exec(ctx); err != nil {
 		return err
 	}
 
