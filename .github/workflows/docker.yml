@@ -13,7 +13,17 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        docker: [mysql.9, mysql.8, mysql.5.7, postgres.13]
+        docker:
+          [
+            mysql.9,
+            mysql.8,
+            mysql.5.7,
+            postgres.13,
+            postgres.12,
+            postgres.11,
+            postgres.10,
+            postgres.9,
+          ]
     name: ${{ matrix.os }} @ build docker with ${{ matrix.docker }}
     steps:
       - name: Checkout repository
