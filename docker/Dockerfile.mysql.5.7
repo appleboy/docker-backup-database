@@ -1,5 +1,8 @@
 FROM mysql:5.7
 
+ARG TARGETOS
+ARG TARGETARCH
+
 LABEL maintainer="Bo-Yi Wu <appleboy.tw@gmail.com>" \
   org.label-schema.name="docker-backup-database" \
   org.label-schema.vendor="Bo-Yi Wu" \
