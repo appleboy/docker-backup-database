@@ -10,6 +10,11 @@ on:
 jobs:
   build-docker:
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        docker: [mysql.8, mysql.7, postgres.13]
+    name: ${{ matrix.os }} @ build docker with ${{ matrix.docker }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -25,7 +30,6 @@ jobs:
       - name: Build binary
         run: |
           make build_linux_amd64
-          make build_linux_arm
           make build_linux_arm64
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
@@ -61,9 +65,7 @@ jobs:
         with:
           context: .
           platforms: linux/amd64,linux/arm64
-          file: docker/Dockerfile
+          file: docker/Dockerfile.${{ matrix.docker }}
           push: ${{ github.event_name != 'pull_request' }}
           tags: ${{ steps.docker-meta.outputs.tags }}
           labels: ${{ steps.docker-meta.outputs.labels }}
-          cache-from: type=registry,ref=ghcr.io/${{ env.REPO }}:buildcache
-          cache-to: type=registry,ref=ghcr.io/${{ env.REPO }}:buildcache,mode=max
