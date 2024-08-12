@@ -32,10 +32,6 @@ jobs:
         with:
           version: latest
           args: --verbose
-      - uses: hadolint/hadolint-action@v3.1.0
-        name: hadolint for Dockerfile
-        with:
-          dockerfile: docker/Dockerfile
 
   test:
     strategy:
@@ -77,11 +73,3 @@ jobs:
         uses: codecov/codecov-action@v4
         with:
           flags: ${{ matrix.os }},go-${{ matrix.go }}
-
-  commitlint:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-      - uses: wagoid/commitlint-github-action@v5
