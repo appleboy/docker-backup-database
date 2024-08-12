@@ -24,7 +24,7 @@ jobs:
             postgres.10,
             postgres.9,
           ]
-    name: ${{ matrix.os }} @ build docker with ${{ matrix.docker }}
+    name: ${{ matrix.os }} @ build ${{ matrix.docker }}
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
