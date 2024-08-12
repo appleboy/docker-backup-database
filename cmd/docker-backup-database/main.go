@@ -3,7 +3,6 @@ package main
 import (
 	"context"
 	"errors"
-	"io/ioutil"
 	"log"
 	"os"
 	"os/signal"
@@ -124,7 +123,7 @@ func backupDB(ctx context.Context, cfg *config.Config) error {
 	}
 
 	// upload file to s3
-	content, err := ioutil.ReadFile(cfg.Storage.DumpName)
+	content, err := os.ReadFile(cfg.Storage.DumpName)
 	if err != nil {
 		return errors.New("can't open the gzip file: " + err.Error())
 	}
