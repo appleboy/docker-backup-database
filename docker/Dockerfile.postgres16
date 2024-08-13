@@ -1,0 +1,13 @@
+FROM postgres:16-alpine
+
+ARG TARGETOS
+ARG TARGETARCH
+
+LABEL maintainer="Bo-Yi Wu <appleboy.tw@gmail.com>" \
+  org.label-schema.name="docker-backup-database" \
+  org.label-schema.vendor="Bo-Yi Wu" \
+  org.label-schema.schema-version="1.0"
+
+COPY release/${TARGETOS}/${TARGETARCH}/docker-backup-database /bin/
+
+ENTRYPOINT ["/bin/docker-backup-database"]
