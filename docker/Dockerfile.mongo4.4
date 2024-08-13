@@ -1,10 +1,13 @@
-FROM mongo:4.0-xenial
+FROM mongodb/mongodb-community-server:4.4.0-ubuntu2004
+
+ARG TARGETOS
+ARG TARGETARCH
 
 LABEL maintainer="Bo-Yi Wu <appleboy.tw@gmail.com>" \
   org.label-schema.name="docker-backup-database" \
   org.label-schema.vendor="Bo-Yi Wu" \
   org.label-schema.schema-version="1.0"
 
-COPY release/linux/amd64/docker-backup-database /bin/
+COPY release/${TARGETOS}/${TARGETARCH}/docker-backup-database /bin/
 
 ENTRYPOINT ["/bin/docker-backup-database"]
