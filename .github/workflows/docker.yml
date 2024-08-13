@@ -15,14 +15,14 @@ jobs:
         os: [ubuntu-latest]
         docker:
           [
-            mysql.9,
-            mysql.8,
-            mysql.5.7,
-            postgres.13,
-            postgres.12,
-            postgres.11,
-            postgres.10,
-            postgres.9,
+            mysql9,
+            mysql8,
+            mysql5.7,
+            postgres13,
+            postgres12,
+            postgres11,
+            postgres10,
+            postgres9,
           ]
     name: ${{ matrix.os }} @ build ${{ matrix.docker }}
     steps:
