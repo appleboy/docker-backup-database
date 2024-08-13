@@ -3,7 +3,7 @@ module github.com/appleboy/docker-backup-database
 go 1.22
 
 require (
-	github.com/appleboy/go-storage v1.0.1
+	github.com/appleboy/go-storage v1.0.2
 	github.com/joho/godotenv v1.5.1
 	github.com/robfig/cron/v3 v3.0.1
 	github.com/urfave/cli/v2 v2.27.4
