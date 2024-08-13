@@ -1,10 +1,8 @@
 # docker-backup-database
 
 [![GoDoc](https://godoc.org/github.com/appleboy/docker-backup-database?status.svg)](https://godoc.org/github.com/appleboy/docker-backup-database)
-[![Build Status](https://cloud.drone.io/api/badges/appleboy/docker-backup-database/status.svg)](https://cloud.drone.io/appleboy/docker-backup-database)
 [![codecov](https://codecov.io/gh/appleboy/docker-backup-database/branch/master/graph/badge.svg)](https://codecov.io/gh/appleboy/docker-backup-database)
 [![Go Report Card](https://goreportcard.com/badge/github.com/appleboy/docker-backup-database)](https://goreportcard.com/report/github.com/appleboy/docker-backup-database)
-[![Docker Pulls](https://img.shields.io/docker/pulls/appleboy/docker-backup-database.svg)](https://hub.docker.com/r/appleboy/docker-backup-database/)
 
 Docker image to periodically backup a your database (MySQL,  Postgres or MongoDB) to Local Disk or S3 ([AWS S3](https://aws.amazon.com/free/storage/s3) or [Minio](https://min.io/)).
 
@@ -14,21 +12,22 @@ Docker image to periodically backup a your database (MySQL,  Postgres or MongoDB
 
 see the [docker hub page](https://hub.docker.com/repository/docker/appleboy/docker-backup-database).
 
-* Postgres (9, 10, 11, 12, 13)
-  * 9: appleboy/docker-backup-database:postgres-9
-  * 10: appleboy/docker-backup-database:postgres-10
-  * 11: appleboy/docker-backup-database:postgres-11
-  * 12: appleboy/docker-backup-database:postgres-12
-  * 13: appleboy/docker-backup-database:postgres-13
-* MySQL (5.6, 5.7, 8)
-  * 5.6: appleboy/docker-backup-database:mysql-5.6
-  * 5.7: appleboy/docker-backup-database:mysql-5.7
-  * 8: appleboy/docker-backup-database:mysql-8
-* Mongo (3.6, 4, 4.2, 4.4)
-  * 3.6: appleboy/docker-backup-database:mongo-3.6
-  * 4.0: appleboy/docker-backup-database:mongo-4.0
-  * 4.2: appleboy/docker-backup-database:mongo-4.2
-  * 4.4: appleboy/docker-backup-database:mongo-4.4
+* Postgres (9, 10, 11, 12, 13, 14, 15, 16)
+  * 9: appleboy/docker-backup-database:postgres9
+  * 10: appleboy/docker-backup-database:postgres10
+  * 11: appleboy/docker-backup-database:postgres11
+  * 12: appleboy/docker-backup-database:postgres12
+  * 13: appleboy/docker-backup-database:postgres13
+  * 14: appleboy/docker-backup-database:postgres14
+  * 15: appleboy/docker-backup-database:postgres15
+  * 16: appleboy/docker-backup-database:postgres16
+* MySQL (5.6, 5.7, 8, 9)
+  * 5.6: appleboy/docker-backup-database:mysql5.6
+  * 5.7: appleboy/docker-backup-database:mysql5.7
+  * 8: appleboy/docker-backup-database:mysql8
+  * 9: appleboy/docker-backup-database:mysql9
+* Mongo (4.4)
+  * 4.4: appleboy/docker-backup-database:mongo4.4
 
 ## Usage
 
@@ -72,7 +71,7 @@ Second Steps: Backup your database and upload the dump file to S3 storage.
 
 ```yaml
   backup_postgres:
-    image: appleboy/docker-backup-database:postgres-12
+    image: appleboy/docker-backup-database:postgres12
     logging:
       options:
         max-size: "100k"
@@ -129,7 +128,7 @@ Cron schedule to run periodic backups. See the `TIME_SCHEDULE` and `TIME_LOCATIO
 
 ```yaml
   backup_mysql:
-    image: appleboy/docker-backup-database:mysql-8
+    image: appleboy/docker-backup-database:mysql8
     logging:
       options:
         max-size: "100k"
