@@ -117,7 +117,7 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 				"INPUT_STORAGE_INSECURE_SKIP_VERIFY",
 				"STORAGE_INSECURE_SKIP_VERIFY",
 			},
-			Destination: &cfg.Storage.InsecureSkipVerify,
+			Destination: &cfg.Storage.SkipVerify,
 		},
 
 		// SCHEDULE
