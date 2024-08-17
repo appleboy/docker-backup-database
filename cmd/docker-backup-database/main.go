@@ -56,6 +56,7 @@ func run(cfg *config.Config) cli.ActionFunc {
 	return func(ctx *cli.Context) error {
 		if cfg.Server.Schedule == "" {
 			slog.Warn("no schedule found, backup database now")
+			return backupDB(ctx.Context, cfg)
 		}
 
 		c := cron.New()
@@ -85,7 +86,7 @@ func run(cfg *config.Config) cli.ActionFunc {
 		<-sig
 		slog.Info("shutting down backup service")
 
-		return backupDB(ctx.Context, cfg)
+		return nil
 	}
 }
 
