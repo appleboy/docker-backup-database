@@ -213,6 +213,7 @@ Entry                  | Description                                | Equivalent
 * STORAGE_PATH - backup folder path in bucket. default is `backup` and all dump file will save in `bucket/backup` directory
 * STORAGE_SSL - default is `false`
 * STORAGE_INSECURE_SKIP_VERIFY - default is `false`
+* STORAGE_DAYS - The number of days to keep the backup files. default is `7`
 
 ### Schedule Section
 

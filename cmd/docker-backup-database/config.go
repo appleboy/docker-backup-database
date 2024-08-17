@@ -124,6 +124,7 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 			Usage:       "Set lifecycle Days",
 			EnvVars:     []string{"PLUGIN_STORAGE_DAYS", "INPUT_STORAGE_DAYS", "STORAGE_DAYS"},
 			Destination: &cfg.Storage.Days,
+			Value:       7,
 		},
 
 		// SCHEDULE
