@@ -54,9 +54,52 @@ func main() {
 
 func run(cfg *config.Config) cli.ActionFunc {
 	return func(ctx *cli.Context) error {
+		// initial storage interface
+		s3, err := storage.NewEngine(storage.Config{
+			Endpoint:  cfg.Storage.Endpoint,
+			AccessID:  cfg.Storage.AccessID,
+			SecretKey: cfg.Storage.SecretKey,
+			SSL:       cfg.Storage.SSL,
+			Region:    cfg.Storage.Region,
+			Path:      cfg.Storage.Path,
+			Bucket:    cfg.Storage.Bucket,
+			Addr:      cfg.Server.Addr,
+			Driver:    cfg.Storage.Driver,
+		})
+		if err != nil {
+			return err
+		}
+
+		// check bucket exist
+		if exist, err := s3.BucketExists(ctx.Context, cfg.Storage.Bucket); !exist {
+			if err != nil {
+				return errors.New("bucket not exist or you don't have permission: " + err.Error())
+			}
+
+			// create new bucket
+			if err := s3.CreateBucket(ctx.Context, cfg.Storage.Bucket, cfg.Storage.Region); err != nil {
+				return errors.New("can't create bucket: " + err.Error())
+			}
+		}
+
+		// Set lifecycle on bucket or an object prefix.
+		if cfg.Storage.Days > 0 && cfg.Storage.Path != "" {
+			if err := s3.SetLifeCycle(ctx.Context, cfg.Storage.Bucket, &core.LifecycleConfig{
+				Days:   cfg.Storage.Days,
+				Prefix: cfg.Storage.Path,
+			}); err != nil {
+				return errors.New("can't set bucket lifecycle: " + err.Error())
+			}
+			slog.Info("set bucket lifecycle successfully",
+				"days", cfg.Storage.Days,
+				"prefix", cfg.Storage.Path,
+				"bucket", cfg.Storage.Bucket,
+			)
+		}
+
 		if cfg.Server.Schedule == "" {
 			slog.Warn("no schedule found, backup database now")
-			return backupDB(ctx.Context, cfg)
+			return backupDB(ctx.Context, cfg, s3)
 		}
 
 		c := cron.New()
@@ -70,7 +113,7 @@ func run(cfg *config.Config) cli.ActionFunc {
 
 		if _, err := c.AddFunc(cfg.Server.Schedule, func() {
 			slog.Info("start backup database now", "schedule", cfg.Server.Schedule)
-			if err := backupDB(ctx.Context, cfg); err != nil {
+			if err := backupDB(ctx.Context, cfg, s3); err != nil {
 				slog.Error("can't backup database", "err", err.Error())
 				return
 			}
@@ -90,54 +133,11 @@ func run(cfg *config.Config) cli.ActionFunc {
 	}
 }
 
-func backupDB(ctx context.Context, cfg *config.Config) error {
-	// initial storage interface
-	s3, err := storage.NewEngine(storage.Config{
-		Endpoint:  cfg.Storage.Endpoint,
-		AccessID:  cfg.Storage.AccessID,
-		SecretKey: cfg.Storage.SecretKey,
-		SSL:       cfg.Storage.SSL,
-		Region:    cfg.Storage.Region,
-		Path:      cfg.Storage.Path,
-		Bucket:    cfg.Storage.Bucket,
-		Addr:      cfg.Server.Addr,
-		Driver:    cfg.Storage.Driver,
-	})
-	if err != nil {
-		return err
-	}
-
+func backupDB(ctx context.Context, cfg *config.Config, s3 core.Storage) error {
 	// initial database dump interface
 	backup, err := dbdump.NewEngine(*cfg)
 	if err != nil {
 		return err
-	}
-
-	// check bucket exist
-	if exist, err := s3.BucketExists(ctx, cfg.Storage.Bucket); !exist {
-		if err != nil {
-			return errors.New("bucket not exist or you don't have permission: " + err.Error())
-		}
-
-		// create new bucket
-		if err := s3.CreateBucket(ctx, cfg.Storage.Bucket, cfg.Storage.Region); err != nil {
-			return errors.New("can't create bucket: " + err.Error())
-		}
-	}
-
-	// Set lifecycle on bucket or an object prefix.
-	if cfg.Storage.Days > 0 && cfg.Storage.Path != "" {
-		if err := s3.SetLifeCycle(ctx, cfg.Storage.Bucket, &core.LifecycleConfig{
-			Days:   cfg.Storage.Days,
-			Prefix: cfg.Storage.Path,
-		}); err != nil {
-			return errors.New("can't set bucket lifecycle: " + err.Error())
-		}
-		slog.Info("set bucket lifecycle successfully",
-			"days", cfg.Storage.Days,
-			"prefix", cfg.Storage.Path,
-			"bucket", cfg.Storage.Bucket,
-		)
 	}
 
 	if err := backup.Exec(ctx); err != nil {
