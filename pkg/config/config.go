@@ -21,6 +21,7 @@ type (
 		Driver     string
 		DumpName   string
 		SkipVerify bool
+		Days       int
 	}
 
 	// Server provides the server configuration.

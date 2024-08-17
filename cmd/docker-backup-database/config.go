@@ -119,6 +119,12 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 			},
 			Destination: &cfg.Storage.SkipVerify,
 		},
+		&cli.IntFlag{
+			Name:        "storage.days",
+			Usage:       "Set lifecycle Days",
+			EnvVars:     []string{"PLUGIN_STORAGE_DAYS", "INPUT_STORAGE_DAYS", "STORAGE_DAYS"},
+			Destination: &cfg.Storage.Days,
+		},
 
 		// SCHEDULE
 		&cli.StringFlag{

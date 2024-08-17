@@ -16,6 +16,7 @@ import (
 	"github.com/appleboy/docker-backup-database/pkg/dbdump"
 
 	"github.com/appleboy/go-storage"
+	"github.com/appleboy/go-storage/core"
 	"github.com/joho/godotenv"
 	"github.com/robfig/cron/v3"
 	"github.com/urfave/cli/v2"
@@ -115,6 +116,16 @@ func backupDB(ctx context.Context, cfg *config.Config) error {
 		// create new bucket
 		if err := s3.CreateBucket(ctx, cfg.Storage.Bucket, cfg.Storage.Region); err != nil {
 			return errors.New("can't create bucket: " + err.Error())
+		}
+	}
+
+	// Set lifecycle on bucket or an object prefix.
+	if cfg.Storage.Days > 0 && cfg.Storage.Path != "" {
+		if err := s3.SetLifeCycle(ctx, cfg.Storage.Bucket, &core.LifecycleConfig{
+			Days:   cfg.Storage.Days,
+			Prefix: cfg.Storage.Path,
+		}); err != nil {
+			return errors.New("can't set bucket lifecycle: " + err.Error())
 		}
 	}
 
