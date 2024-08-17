@@ -2,7 +2,7 @@ GO ?= go
 EXECUTABLE := docker-backup-database
 GOFILES := $(shell find . -type f -name "*.go")
 TAGS ?=
-LDFLAGS ?= -X 'github.com/appleboy/docker-backup-database/cmd.Version=$(VERSION)' -X 'github.com/appleboy/docker-backup-database/cmd.Commit=$(COMMIT)'
+LDFLAGS ?= -X 'main.Version=$(VERSION)' -X 'main.Commit=$(COMMIT)'
 
 ifneq ($(shell uname), Darwin)
 	EXTLDFLAGS = -extldflags "-static" $(null)
