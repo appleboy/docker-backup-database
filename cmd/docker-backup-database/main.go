@@ -132,6 +132,11 @@ func backupDB(ctx context.Context, cfg *config.Config) error {
 		}); err != nil {
 			return errors.New("can't set bucket lifecycle: " + err.Error())
 		}
+		slog.Info("set bucket lifecycle successfully",
+			"days", cfg.Storage.Days,
+			"prefix", cfg.Storage.Path,
+			"bucket", cfg.Storage.Bucket,
+		)
 	}
 
 	if err := backup.Exec(ctx); err != nil {
