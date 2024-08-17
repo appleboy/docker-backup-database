@@ -3,7 +3,7 @@ package main
 import (
 	"context"
 	"errors"
-	"log"
+	"log/slog"
 	"os"
 	"os/signal"
 	"path"
@@ -48,38 +48,43 @@ func main() {
 	}
 
 	if err := app.Run(os.Args); err != nil {
-		log.Fatal(err)
+		slog.Error("can't run app", "err", err.Error())
 	}
 }
 
 func run(cfg *config.Config) cli.ActionFunc {
 	return func(ctx *cli.Context) error {
-		if cfg.Server.Schedule != "" {
-			c := cron.New()
-			if cfg.Server.Location != "" {
-				loc, err := time.LoadLocation(cfg.Server.Location)
-				if err != nil {
-					log.Fatal("crontab location error: " + err.Error())
-				}
-				c = cron.New(cron.WithLocation(loc))
-			}
-
-			if _, err := c.AddFunc(cfg.Server.Schedule, func() {
-				log.Println("start backup database now")
-				if err := backupDB(ctx.Context, cfg); err != nil {
-					log.Fatal("can't backup database: " + err.Error())
-				}
-				log.Println("backup database successfully")
-			}); err != nil {
-				log.Fatal("crontab Schedule error: " + err.Error())
-			}
-			c.Start()
-			// Register shutdown signal notifications
-			sig := make(chan os.Signal, 1)
-			signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
-			<-sig
-			log.Println("shutting down backup service")
+		if cfg.Server.Schedule == "" {
+			slog.Warn("no schedule found, backup database now")
 		}
+
+		c := cron.New()
+		if cfg.Server.Location != "" {
+			loc, err := time.LoadLocation(cfg.Server.Location)
+			if err != nil {
+				return err
+			}
+			c = cron.New(cron.WithLocation(loc))
+		}
+
+		if _, err := c.AddFunc(cfg.Server.Schedule, func() {
+			slog.Info("start backup database now", "schedule", cfg.Server.Schedule)
+			if err := backupDB(ctx.Context, cfg); err != nil {
+				slog.Error("can't backup database", "err", err.Error())
+				return
+			}
+			slog.Info("backup database successfully")
+		}); err != nil {
+			slog.Error("crontab Schedule error", "err", err.Error())
+			return err
+		}
+		c.Start()
+		// Register shutdown signal notifications
+		sig := make(chan os.Signal, 1)
+		signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
+		<-sig
+		slog.Info("shutting down backup service")
+
 		return backupDB(ctx.Context, cfg)
 	}
 }
