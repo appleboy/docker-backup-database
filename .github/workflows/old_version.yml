@@ -1,4 +1,4 @@
-name: Docker Image
+name: Old Docker Image
 
 on:
   push:
