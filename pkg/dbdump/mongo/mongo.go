@@ -34,7 +34,7 @@ func (d Dump) Exec(ctx context.Context) error {
 	envs := os.Environ()
 
 	// Print the version number fo rht ecommand line tools
-	cmd := exec.Command("mongodump", "--version")
+	cmd := exec.CommandContext(ctx, "mongodump", "--version")
 	cmd.Env = envs
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
@@ -73,7 +73,7 @@ func (d Dump) Exec(ctx context.Context) error {
 		flags = append(flags, d.Opts)
 	}
 
-	cmd = exec.Command("bash", "-c", strings.Join(flags, " ")) //nolint:gosec
+	cmd = exec.CommandContext(ctx, "bash", "-c", strings.Join(flags, " ")) //nolint:gosec
 	cmd.Env = envs
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
