@@ -187,7 +187,7 @@ Entry                  | Description                                | Equivalent
 * STORAGE_ENDPOINT - S3 Endpoint. default is `s3.amazonaws.com`
 * STORAGE_BUCKET - S3 bucket name
 * STORAGE_REGION - S3 Region. default is `ap-northeast-1`
-* STORAGE_PATH - backup folder path in bucket. default is `backup` and all dump file will save in `bucket/backup` directory
+* STORAGE_PATH - backup folder path in bucket. default is `backup` and all dump file will save in `bucket_name/backup` directory
 * STORAGE_SSL - default is `false`
 * STORAGE_INSECURE_SKIP_VERIFY - default is `false`
 * STORAGE_DAYS - The number of days to keep the backup files. default is `7`
