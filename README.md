@@ -21,9 +21,7 @@ see the [docker hub page](https://hub.docker.com/repository/docker/appleboy/dock
   * 14: appleboy/docker-backup-database:postgres14
   * 15: appleboy/docker-backup-database:postgres15
   * 16: appleboy/docker-backup-database:postgres16
-* MySQL (5.6, 5.7, 8, 9)
-  * 5.6: appleboy/docker-backup-database:mysql5.6
-  * 5.7: appleboy/docker-backup-database:mysql5.7
+* MySQL (8, 9)
   * 8: appleboy/docker-backup-database:mysql8
   * 9: appleboy/docker-backup-database:mysql9
 * Mongo (4.4)
@@ -36,16 +34,17 @@ First steps: Setup the Minio and Postgres 12 Server using docker-compose command
 ```yaml
 services:
   minio:
-    image: minio/minio:edge
+    image: quay.io/minio/minio
     restart: always
     volumes:
       - data1-1:/data1
     ports:
       - 9000:9000
+      - 9001:9001
     environment:
-      MINIO_ACCESS_KEY: 1234567890
-      MINIO_SECRET_KEY: 1234567890
-    command: server /data
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD: minioadmin
+    command: server /data --console-address ":9001"
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 30s
@@ -84,8 +83,8 @@ Second Steps: Backup your database and upload the dump file to S3 storage.
       STORAGE_PATH: backup_postgres
       STORAGE_SSL: "false"
       STORAGE_INSECURE_SKIP_VERIFY: "false"
-      ACCESS_KEY_ID: 1234567890
-      SECRET_ACCESS_KEY: 1234567890
+      ACCESS_KEY_ID: minioadmin
+      SECRET_ACCESS_KEY: minioadmin
 
       DATABASE_DRIVER: postgres
       DATABASE_HOST: postgres:5432
@@ -95,34 +94,11 @@ Second Steps: Backup your database and upload the dump file to S3 storage.
       DATABASE_OPTS:
 ```
 
-Final Step: [manage bucket lifecycle](https://docs.min.io/docs/minio-bucket-lifecycle-guide.html) using [MinIO Client (mc)](https://docs.min.io/docs/minio-client-quickstart-guide.html).
+The default lifecycle policy is to keep the backup files for 7 days. You can change the `STORAGE_DAYS` environment variable to keep the backup files for a different number of days.
 
 ```yaml
-$ mc ilm import minio/test <<EOF
-{
-    "Rules": [
-        {
-            "Expiration": {
-                "Days": 7
-            },
-            "ID": "backup_postgres",
-            "Filter": {
-                "Prefix": "backup_postgres/"
-            },
-            "Status": "Enabled"
-        }
-    ]
-}
-EOF
+  STORAGE_DAYS: 30
 ```
-
-Lifecycle configuration imported successfully to `minio/test` and list the current settings
-
-```sh
-mc ilm ls minio/test
-```
-
-![mc ilm](./images/mc_ilm.png)
 
 Cron schedule to run periodic backups. See the `TIME_SCHEDULE` and `TIME_LOCATION`
 
