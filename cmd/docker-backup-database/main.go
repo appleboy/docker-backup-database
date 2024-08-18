@@ -18,6 +18,7 @@ import (
 	"github.com/appleboy/go-storage"
 	"github.com/appleboy/go-storage/core"
 	"github.com/joho/godotenv"
+	_ "github.com/joho/godotenv/autoload"
 	"github.com/robfig/cron/v3"
 	"github.com/urfave/cli/v2"
 )
