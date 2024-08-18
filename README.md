@@ -94,10 +94,11 @@ Second Steps: Backup your database and upload the dump file to S3 storage.
       DATABASE_OPTS:
 ```
 
-The default lifecycle policy is to keep the backup files for 7 days. You can change the `STORAGE_DAYS` environment variable to keep the backup files for a different number of days.
+The default lifecycle policy is to keep the backup files for 7 days. You can change the `STORAGE_DAYS` environment variable to keep the backup files for a different number of days. You also can change the `STORAGE_PATH` environment variable to save the backup files in a different directory.
 
 ```yaml
   STORAGE_DAYS: 30
+  STORAGE_PATH: backup_postgres
 ```
 
 Cron schedule to run periodic backups. See the `TIME_SCHEDULE` and `TIME_LOCATION`
