@@ -71,6 +71,9 @@ jobs:
             ${{ github.repository }}
             ghcr.io/${{ github.repository }}
           tags: |
+            type=semver,pattern={{version}}-${{ matrix.docker }}
+            type=semver,pattern={{major}}.{{minor}}-${{ matrix.docker }}
+            type=semver,pattern={{major}}-${{ matrix.docker }}
             type=raw,${{ matrix.docker }}
 
       - name: downcase REPO
