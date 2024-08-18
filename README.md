@@ -27,6 +27,20 @@ see the [docker hub page](https://hub.docker.com/repository/docker/appleboy/dock
 * Mongo (4.4)
   * 4.4: appleboy/docker-backup-database:mongo4.4
 
+## Docker Image
+
+You can pull the latest image of the project from the Docker Hub Registry.
+
+```sh
+docker pull appleboy/docker-backup-database:postgres12
+```
+
+Or you can pull the latest image of the project from the GitHub Container Registry.
+
+```sh
+docker pull ghcr.io/appleboy/docker-backup-database:postgres12
+```
+
 ## Usage
 
 First steps: Setup the Minio and Postgres 12 Server using docker-compose command.
