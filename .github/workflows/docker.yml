@@ -17,7 +17,6 @@ jobs:
           [
             mysql9,
             mysql8,
-            mysql5.7,
             mongo4.4,
             postgres16,
             postgres15,
