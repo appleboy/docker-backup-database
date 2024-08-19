@@ -74,7 +74,7 @@ jobs:
             type=semver,pattern={{version}}-${{ matrix.docker }}
             type=semver,pattern={{major}}.{{minor}}-${{ matrix.docker }}
             type=semver,pattern={{major}}-${{ matrix.docker }}
-            type=raw,${{ matrix.docker }}
+            type=raw,value=${{ matrix.docker }},enable={{is_default_branch}}
 
       - name: downcase REPO
         run: |
