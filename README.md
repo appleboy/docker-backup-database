@@ -22,6 +22,7 @@ see the [docker hub page](https://hub.docker.com/repository/docker/appleboy/dock
   * 14: appleboy/docker-backup-database:postgres14
   * 15: appleboy/docker-backup-database:postgres15
   * 16: appleboy/docker-backup-database:postgres16
+  * 17: appleboy/docker-backup-database:postgres17
 * MySQL (8, 9)
   * 8: appleboy/docker-backup-database:mysql8
   * 9: appleboy/docker-backup-database:mysql9
@@ -163,24 +164,24 @@ Each line of a crontab file represents a job, and looks like this:
 
 A cron expression represents a set of times, using 5 space-separated fields.
 
-Field name   | Mandatory? | Allowed values  | Allowed special characters
-----------   | ---------- | --------------  | --------------------------
-Minutes      | Yes        | 0-59            | * / , -
-Hours        | Yes        | 0-23            | * / , -
-Day of month | Yes        | 1-31            | * / , - ?
-Month        | Yes        | 1-12 or JAN-DEC | * / , -
-Day of week  | Yes        | 0-6 or SUN-SAT  | * / , - ?
+| Field name   | Mandatory? | Allowed values  | Allowed special characters |
+| ------------ | ---------- | --------------- | -------------------------- |
+| Minutes      | Yes        | 0-59            | * / , -                    |
+| Hours        | Yes        | 0-23            | * / , -                    |
+| Day of month | Yes        | 1-31            | * / , - ?                  |
+| Month        | Yes        | 1-12 or JAN-DEC | * / , -                    |
+| Day of week  | Yes        | 0-6 or SUN-SAT  | * / , - ?                  |
 
 You may use one of several pre-defined schedules in place of a cron expression.
 
 ```sh
-Entry                  | Description                                | Equivalent To
------                  | -----------                                | -------------
-@yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *
-@monthly               | Run once a month, midnight, first of month | 0 0 1 * *
-@weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0
-@daily (or @midnight)  | Run once a day, midnight                   | 0 0 * * *
-@hourly                | Run once an hour, beginning of hour        | 0 * * * *
+| Entry                  | Description                                | Equivalent To |
+| ---------------------- | ------------------------------------------ | ------------- |
+| @yearly (or @annually) | Run once a year, midnight, Jan. 1st        | 0 0 1 1 *     |
+| @monthly               | Run once a month, midnight, first of month | 0 0 1 * *     |
+| @weekly                | Run once a week, midnight between Sat/Sun  | 0 0 * * 0     |
+| @daily (or @midnight)  | Run once a day, midnight                   | 0 0 * * *     |
+| @hourly                | Run once an hour, beginning of hour        | 0 * * * *     |
 ```
 
 ## Envionment Variables
