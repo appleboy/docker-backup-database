@@ -18,6 +18,7 @@ jobs:
             mysql9,
             mysql8,
             mongo4.4,
+            postgres17,
             postgres16,
             postgres15,
             postgres14,
