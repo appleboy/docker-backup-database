@@ -13,7 +13,7 @@ Docker image to periodically backup a your database (MySQL,  Postgres or MongoDB
 
 see the [docker hub page](https://hub.docker.com/repository/docker/appleboy/docker-backup-database).
 
-* Postgres (9, 10, 11, 12, 13, 14, 15, 16)
+* Postgres (9, 10, 11, 12, 13, 14, 15, 16, 17)
   * 9: appleboy/docker-backup-database:postgres9
   * 10: appleboy/docker-backup-database:postgres10
   * 11: appleboy/docker-backup-database:postgres11
