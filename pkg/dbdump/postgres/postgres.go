@@ -68,7 +68,7 @@ func (d Dump) Exec(ctx context.Context) error {
 	flags = append(flags, "|", "gzip", ">", d.DumpName)
 
 	if d.Password != "" {
-		envs = append(envs, fmt.Sprintf("PGPASSWORD=%s", d.Password))
+		envs = append(envs, "PGPASSWORD="+d.Password)
 	}
 
 	cmd = exec.CommandContext(ctx, "bash", "-c", strings.Join(flags, " ")) //nolint:gosec

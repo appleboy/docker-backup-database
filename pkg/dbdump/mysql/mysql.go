@@ -70,7 +70,7 @@ func (d Dump) Exec(ctx context.Context) error {
 	if d.Password != "" {
 		// See the MySQL Environment Variables
 		// ref: https://dev.mysql.com/doc/refman/8.0/en/environment-variables.html
-		envs = append(envs, fmt.Sprintf("MYSQL_PWD=%s", d.Password))
+		envs = append(envs, "MYSQL_PWD="+d.Password)
 	}
 
 	cmd = exec.CommandContext(ctx, "bash", "-c", strings.Join(flags, " ")) //nolint:gosec
