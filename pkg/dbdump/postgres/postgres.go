@@ -33,17 +33,17 @@ func getHostPort(h string) (string, string) {
 func (d Dump) Exec(ctx context.Context) error {
 	envs := os.Environ()
 
-	// Print the version number fo rht ecommand line tools
+	// Print the version number for the command line tools
 	cmd := exec.CommandContext(ctx, "pg_dump", "--version")
 	cmd.Env = envs
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	trace(cmd)
 	if err := cmd.Run(); err != nil {
-		return err
+		return fmt.Errorf("failed to get pg_dump version: %w", err)
 	}
 
-	flags := []string{"pg_dump"}
+	flags := []string{}
 	host, port := getHostPort(d.Host)
 	if host != "" {
 		flags = append(flags, "-h", host)
@@ -64,19 +64,39 @@ func (d Dump) Exec(ctx context.Context) error {
 		flags = append(flags, d.Name)
 	}
 
-	// add gzip command
-	flags = append(flags, "|", "gzip", ">", d.DumpName)
-
 	if d.Password != "" {
 		envs = append(envs, "PGPASSWORD="+d.Password)
 	}
 
-	cmd = exec.CommandContext(ctx, "bash", "-c", strings.Join(flags, " ")) //nolint:gosec
+	cmd = exec.CommandContext(ctx, "pg_dump", flags...)
 	cmd.Env = envs
 	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+
+	// Use a pipe to gzip the output
+	gzipCmd := exec.CommandContext(ctx, "gzip")
+	gzipCmd.Stdin, _ = cmd.StdoutPipe()
+	gzipCmd.Stdout = os.Stdout
+	gzipCmd.Stderr = os.Stderr
+
 	trace(cmd)
-	return cmd.Run()
+	if err := cmd.Start(); err != nil {
+		return fmt.Errorf("failed to start pg_dump: %w", err)
+	}
+
+	trace(gzipCmd)
+	if err := gzipCmd.Start(); err != nil {
+		return fmt.Errorf("failed to start gzip: %w", err)
+	}
+
+	if err := cmd.Wait(); err != nil {
+		return fmt.Errorf("pg_dump failed: %w", err)
+	}
+
+	if err := gzipCmd.Wait(); err != nil {
+		return fmt.Errorf("gzip failed: %w", err)
+	}
+
+	return nil
 }
 
 // trace prints the command to the stdout.
