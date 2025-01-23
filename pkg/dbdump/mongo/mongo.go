@@ -33,17 +33,17 @@ func getHostPort(h string) (string, string) {
 func (d Dump) Exec(ctx context.Context) error {
 	envs := os.Environ()
 
-	// Print the version number fo rht ecommand line tools
+	// Print the version number for the command line tools
 	cmd := exec.CommandContext(ctx, "mongodump", "--version")
 	cmd.Env = envs
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	trace(cmd)
 	if err := cmd.Run(); err != nil {
-		return err
+		return fmt.Errorf("failed to get mongodump version: %w", err)
 	}
 
-	flags := []string{"mongodump"}
+	flags := []string{}
 	host, port := getHostPort(d.Host)
 	if host != "" {
 		flags = append(flags, "-h", host)
@@ -57,7 +57,7 @@ func (d Dump) Exec(ctx context.Context) error {
 	}
 
 	if d.Password != "" {
-		flags = append(flags, "-p", d.Password)
+		envs = append(envs, "MONGO_PWD="+d.Password)
 	}
 
 	if d.Name != "" {
@@ -73,12 +73,20 @@ func (d Dump) Exec(ctx context.Context) error {
 		flags = append(flags, d.Opts)
 	}
 
-	cmd = exec.CommandContext(ctx, "bash", "-c", strings.Join(flags, " ")) //nolint:gosec
+	cmd = exec.CommandContext(ctx, "mongodump", flags...)
 	cmd.Env = envs
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	trace(cmd)
-	return cmd.Run()
+	if err := cmd.Start(); err != nil {
+		return fmt.Errorf("failed to start mongodump: %w", err)
+	}
+
+	if err := cmd.Wait(); err != nil {
+		return fmt.Errorf("mongodump failed: %w", err)
+	}
+
+	return nil
 }
 
 // trace prints the command to the stdout.
