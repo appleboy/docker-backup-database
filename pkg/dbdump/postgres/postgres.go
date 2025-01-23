@@ -85,7 +85,7 @@ func trace(cmd *exec.Cmd) {
 }
 
 // NewEngine struct
-func NewEngine(host, username, password, name, dumpName, opts string) (*Dump, error) {
+func NewEngine(host, username, password, name, dumpName, opts string) *Dump {
 	return &Dump{
 		Host:     host,
 		Username: username,
@@ -93,5 +93,5 @@ func NewEngine(host, username, password, name, dumpName, opts string) (*Dump, er
 		Name:     name,
 		Opts:     opts,
 		DumpName: dumpName,
-	}, nil
+	}
 }

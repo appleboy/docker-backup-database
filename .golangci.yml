@@ -1,41 +1,50 @@
-run:
-  timeout: 5m
 linters:
+  disable-all: true
   enable:
-    - asciicheck
+    - bodyclose
     - dogsled
-    - durationcheck
     - errcheck
-    - errorlint
-    - exportloopref
-    - gci
+    - exhaustive
+    - gochecknoinits
+    - goconst
+    - gocritic
+    - gocyclo
     - gofmt
     - goimports
+    - goprintffuncname
     - gosec
+    - gosimple
+    - govet
+    - ineffassign
     - misspell
     - nakedret
-    - nilerr
-    - perfsprint
-    - revive
-    - testifylint
-    - usestdlibvars
-    - wastedassign
+    - noctx
+    - nolintlint
+    - staticcheck
+    - stylecheck
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - whitespace
+    - gofumpt
+    - sloglint
+
+issues:
+  exclude-rules:
+    # Exclude `lll` issues for long lines with `go:generate`.
+    - linters:
+        - lll
+      source: "^//go:generate "
 
 linters-settings:
-  gosec:
-    # To select a subset of rules to run.
-    # Available rules: https://github.com/securego/gosec#available-rules
-    # Default: [] - means include all rules
-    includes: []
-    # To exclude a subset of rules from running.
-    # Default: [] - means exclude no rules
-    excludes:
-      - G402
-  perfsprint:
-    err-error: true
-    errorf: true
-    int-conversion: true
-    sprintf1: true
-    strconcat: true
-  testifylint:
-    enable-all: true
+  unparam:
+    # Inspect exported functions.
+    #
+    # Set to true if no external program/library imports your code.
+    # XXX: if you enable this setting, unparam will report a lot of false-positives in text editors:
+    # if it's called for subdir of a project it can't find external interfaces. All text editor integrations
+    # with golangci-lint call it on a directory with the changed file.
+    #
+    # Default: false
+    check-exported: true

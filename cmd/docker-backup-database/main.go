@@ -136,11 +136,7 @@ func run(cfg *config.Config) cli.ActionFunc {
 
 func backupDB(ctx context.Context, cfg *config.Config, s3 core.Storage) error {
 	// initial database dump interface
-	backup, err := dbdump.NewEngine(*cfg)
-	if err != nil {
-		return err
-	}
-
+	backup := dbdump.NewEngine(*cfg)
 	if err := backup.Exec(ctx); err != nil {
 		return err
 	}

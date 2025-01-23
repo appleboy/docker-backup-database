@@ -17,7 +17,7 @@ type Backup interface {
 }
 
 // NewEngine return storage interface
-func NewEngine(cfg config.Config) (backup Backup, err error) {
+func NewEngine(cfg config.Config) Backup {
 	switch cfg.Database.Driver {
 	case "postgres":
 		return postgres.NewEngine(
@@ -46,7 +46,7 @@ func NewEngine(cfg config.Config) (backup Backup, err error) {
 			cfg.Storage.DumpName,
 			cfg.Database.Opts,
 		)
+	default:
+		panic(errors.New("unsupported database driver"))
 	}
-
-	return nil, errors.New("We don't support Databaser Dirver: " + cfg.Database.Driver)
 }
