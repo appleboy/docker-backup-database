@@ -33,17 +33,17 @@ func getHostPort(h string) (string, string) {
 func (d Dump) Exec(ctx context.Context) error {
 	envs := os.Environ()
 
-	// Print the version number fo rht ecommand line tools
+	// Print the version number for the command line tools
 	cmd := exec.CommandContext(ctx, "mysqldump", "--version")
 	cmd.Env = envs
 	cmd.Stdout = os.Stdout
 	cmd.Stderr = os.Stderr
 	trace(cmd)
 	if err := cmd.Run(); err != nil {
-		return err
+		return fmt.Errorf("failed to get mysqldump version: %w", err)
 	}
 
-	flags := []string{"mysqldump"}
+	flags := []string{}
 	host, port := getHostPort(d.Host)
 	if host != "" {
 		flags = append(flags, "-h", host)
@@ -64,21 +64,38 @@ func (d Dump) Exec(ctx context.Context) error {
 		flags = append(flags, d.Name)
 	}
 
-	// add gzip command
-	flags = append(flags, "|", "gzip", ">", d.DumpName)
-
 	if d.Password != "" {
-		// See the MySQL Environment Variables
-		// ref: https://dev.mysql.com/doc/refman/8.0/en/environment-variables.html
 		envs = append(envs, "MYSQL_PWD="+d.Password)
 	}
 
-	cmd = exec.CommandContext(ctx, "bash", "-c", strings.Join(flags, " ")) //nolint:gosec
+	cmd = exec.CommandContext(ctx, "mysqldump", flags...)
 	cmd.Env = envs
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
+
+	// Use a pipe to gzip the output
+	gzipCmd := exec.CommandContext(ctx, "gzip")
+	gzipCmd.Stdin, _ = cmd.StdoutPipe()
+	gzipCmd.Stdout = os.Stdout
+	gzipCmd.Stderr = os.Stderr
+
 	trace(cmd)
-	return cmd.Run()
+	if err := cmd.Start(); err != nil {
+		return fmt.Errorf("failed to start mysqldump: %w", err)
+	}
+
+	trace(gzipCmd)
+	if err := gzipCmd.Start(); err != nil {
+		return fmt.Errorf("failed to start gzip: %w", err)
+	}
+
+	if err := cmd.Wait(); err != nil {
+		return fmt.Errorf("mysqldump failed: %w", err)
+	}
+
+	if err := gzipCmd.Wait(); err != nil {
+		return fmt.Errorf("gzip failed: %w", err)
+	}
+
+	return nil
 }
 
 // trace prints the command to the stdout.
