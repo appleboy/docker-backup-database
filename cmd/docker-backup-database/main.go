@@ -119,6 +119,13 @@ func run(cfg *config.Config) cli.ActionFunc {
 				return
 			}
 			slog.Info("backup database successfully")
+			if webhookURL := os.Getenv("WEBHOOK_URL"); webhookURL != "" {
+				if err := callWebhook(webhookURL); err != nil {
+					slog.Error("failed to call webhook", "err", err.Error())
+					return
+				}
+				slog.Info("webhook called successfully")
+			}
 		}); err != nil {
 			slog.Error("crontab Schedule error", "err", err.Error())
 			return err
@@ -169,4 +176,18 @@ func backupDB(ctx context.Context, cfg *config.Config, s3 core.Storage) error {
 
 	// backup database
 	return s3.UploadFile(ctx, cfg.Storage.Bucket, filePath, content, nil)
+}
+
+func callWebhook(url string) error {
+    resp, err := http.Post(url, "application/json", nil)
+    if err != nil {
+        return fmt.Errorf("failed to call webhook: %w", err)
+    }
+    defer resp.Body.Close()
+
+    if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+        return fmt.Errorf("webhook returned non-2xx status code: %d", resp.StatusCode)
+    }
+
+    return nil
 }
