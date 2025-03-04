@@ -2,6 +2,7 @@ package main
 
 import (
 	"context"
+	"crypto/tls"
 	"errors"
 	"log/slog"
 	"net/http"
@@ -123,7 +124,11 @@ func run(cfg *config.Config) cli.ActionFunc {
 			slog.Info("backup database successfully")
 			// call webhook
 			if cfg.Webhook.URL != "" {
-				if err := callWebhook(ctx.Context, cfg.Webhook.URL); err != nil {
+				if err := callWebhook(
+					ctx.Context,
+					cfg.Webhook.URL,
+					cfg.Webhook.Insecure,
+				); err != nil {
 					slog.Error("can't call webhook", "err", err.Error())
 					return
 				}
@@ -182,10 +187,16 @@ func backupDB(ctx context.Context, cfg *config.Config, s3 core.Storage) error {
 }
 
 // callWebhook sends a POST request to the specified webhook URL.
-// It takes a context and a target URL as parameters.
-// If the URL is invalid or the request fails, it returns an error.
-// If the response status code is not 200 OK, it returns an error with the status code.
-func callWebhook(ctx context.Context, target string) error {
+// It accepts a context for request cancellation, the target URL, and a boolean flag to disable SSL certificate verification.
+//
+// Parameters:
+//   - ctx: context.Context - The context to control the request lifetime.
+//   - target: string - The webhook URL to send the POST request to.
+//   - insecure: bool - If true, disables SSL certificate verification.
+//
+// Returns:
+//   - error: An error if the request fails or the response status code is not 200 OK.
+func callWebhook(ctx context.Context, target string, insecure bool) error {
 	parsedURL, err := url.Parse(target)
 	if err != nil {
 		return errors.New("invalid webhook URL: " + err.Error())
@@ -194,7 +205,19 @@ func callWebhook(ctx context.Context, target string) error {
 	if err != nil {
 		return err
 	}
-	client := &http.Client{}
+
+	// Create a custom HTTP client with a default timeout
+	client := &http.Client{
+		Timeout: 10 * time.Second,
+	}
+	if insecure {
+		// Disable SSL certificate verification if insecure is true
+		tr := &http.Transport{
+			TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // #nosec
+		}
+		client.Transport = tr
+	}
+
 	resp, err := client.Do(req)
 	if err != nil {
 		return err

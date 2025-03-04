@@ -168,5 +168,11 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_WEBHOOK_URL", "INPUT_WEBHOOK_URL", "WEBHOOK_URL"},
 			Destination: &cfg.Webhook.URL,
 		},
+		&cli.BoolFlag{
+			Name:        "webhook.insecure",
+			Usage:       "webhook insecure",
+			EnvVars:     []string{"PLUGIN_WEBHOOK_INSECURE", "INPUT_WEBHOOK_INSECURE", "WEBHOOK_INSECURE"},
+			Destination: &cfg.Webhook.Insecure,
+		},
 	}
 }

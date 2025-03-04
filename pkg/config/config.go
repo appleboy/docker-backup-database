@@ -11,7 +11,8 @@ type (
 	}
 
 	Webhook struct {
-		URL string
+		URL      string
+		Insecure bool
 	}
 
 	// Storage config
