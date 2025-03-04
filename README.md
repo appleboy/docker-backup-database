@@ -110,7 +110,7 @@ backup_postgres:
     DATABASE_OPTS:
 ```
 
-The default lifecycle policy is to keep the backup files for 7 days. You can change the `STORAGE_DAYS` environment variable to keep the backup files for a different number of days. You also can change the `STORAGE_PATH` environment variable to save the backup files in a different directory.
+The default lifecycle policy is disabled. You can enable it by setting the `STORAGE_DAYS` environment variable. You can change the `STORAGE_DAYS` environment variable to keep the backup files for a different number of days. You also can change the `STORAGE_PATH` environment variable to save the backup files in a different directory.
 
 ```yaml
 STORAGE_DAYS: 30
