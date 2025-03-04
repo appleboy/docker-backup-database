@@ -162,5 +162,11 @@ func settingsFlags(cfg *config.Config) []cli.Flag {
 			EnvVars:     []string{"PLUGIN_FILE_FORMAT", "INPUT_FILE_FORMAT", "FILE_FORMAT"},
 			Destination: &cfg.File.Format,
 		},
+		&cli.StringFlag{
+			Name:        "webhook.url",
+			Usage:       "webhook url",
+			EnvVars:     []string{"PLUGIN_WEBHOOK_URL", "INPUT_WEBHOOK_URL", "WEBHOOK_URL"},
+			Destination: &cfg.Webhook.URL,
+		},
 	}
 }

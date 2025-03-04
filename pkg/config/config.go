@@ -7,6 +7,11 @@ type (
 		Database Database
 		Storage  Storage
 		File     File
+		Webhook  Webhook
+	}
+
+	Webhook struct {
+		URL string
 	}
 
 	// Storage config

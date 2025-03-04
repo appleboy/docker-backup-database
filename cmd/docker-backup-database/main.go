@@ -4,6 +4,8 @@ import (
 	"context"
 	"errors"
 	"log/slog"
+	"net/http"
+	"net/url"
 	"os"
 	"os/signal"
 	"path"
@@ -119,12 +121,13 @@ func run(cfg *config.Config) cli.ActionFunc {
 				return
 			}
 			slog.Info("backup database successfully")
-			if webhookURL := os.Getenv("WEBHOOK_URL"); webhookURL != "" {
-				if err := callWebhook(webhookURL); err != nil {
-					slog.Error("failed to call webhook", "err", err.Error())
+			// call webhook
+			if cfg.Webhook.URL != "" {
+				if err := callWebhook(ctx.Context, cfg.Webhook.URL); err != nil {
+					slog.Error("can't call webhook", "err", err.Error())
 					return
 				}
-				slog.Info("webhook called successfully")
+				slog.Info("call webhook successfully")
 			}
 		}); err != nil {
 			slog.Error("crontab Schedule error", "err", err.Error())
@@ -178,16 +181,29 @@ func backupDB(ctx context.Context, cfg *config.Config, s3 core.Storage) error {
 	return s3.UploadFile(ctx, cfg.Storage.Bucket, filePath, content, nil)
 }
 
-func callWebhook(url string) error {
-    resp, err := http.Post(url, "application/json", nil)
-    if err != nil {
-        return fmt.Errorf("failed to call webhook: %w", err)
-    }
-    defer resp.Body.Close()
+// callWebhook sends a POST request to the specified webhook URL.
+// It takes a context and a target URL as parameters.
+// If the URL is invalid or the request fails, it returns an error.
+// If the response status code is not 200 OK, it returns an error with the status code.
+func callWebhook(ctx context.Context, target string) error {
+	parsedURL, err := url.Parse(target)
+	if err != nil {
+		return errors.New("invalid webhook URL: " + err.Error())
+	}
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, parsedURL.String(), nil)
+	if err != nil {
+		return err
+	}
+	client := &http.Client{}
+	resp, err := client.Do(req)
+	if err != nil {
+		return err
+	}
+	defer resp.Body.Close()
 
-    if resp.StatusCode < 200 || resp.StatusCode >= 300 {
-        return fmt.Errorf("webhook returned non-2xx status code: %d", resp.StatusCode)
-    }
+	if resp.StatusCode != http.StatusOK {
+		return errors.New("failed to call webhook, status code: " + strconv.Itoa(resp.StatusCode))
+	}
 
-    return nil
+	return nil
 }
