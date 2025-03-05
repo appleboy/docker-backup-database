@@ -212,10 +212,9 @@ func callWebhook(ctx context.Context, target string, insecure bool) error {
 	}
 	if insecure {
 		// Disable SSL certificate verification if insecure is true
-		tr := &http.Transport{
+		client.Transport = &http.Transport{
 			TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // #nosec
 		}
-		client.Transport = tr
 	}
 
 	resp, err := client.Do(req)
