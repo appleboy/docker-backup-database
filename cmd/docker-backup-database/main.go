@@ -150,39 +150,39 @@ func run(cfg *config.Config) cli.ActionFunc {
 }
 
 func backupDB(ctx context.Context, cfg *config.Config, s3 core.Storage) error {
-	// initial database dump interface
+	// Initialize database dump interface
 	backup := dbdump.NewEngine(*cfg)
 	if err := backup.Exec(ctx); err != nil {
 		return err
 	}
 
-	// upload file to s3
+	// Read the dump file
 	content, err := os.ReadFile(cfg.Storage.DumpName)
 	if err != nil {
 		return errors.New("can't open the gzip file: " + err.Error())
 	}
 
-	filename := []string{}
+	// Construct the filename
+	filenameParts := []string{}
 	if cfg.File.Prefix == "" {
 		cfg.File.Prefix = cfg.Database.Driver
 	}
+	filenameParts = append(filenameParts, cfg.File.Prefix)
 
-	filename = append(filename, cfg.File.Prefix)
-
-	defaultFormat := time.Now().Format(cfg.File.Format)
+	timeFormat := time.Now().Format(cfg.File.Format)
 	if cfg.Server.Location != "" {
 		loc, _ := time.LoadLocation(cfg.Server.Location)
-		defaultFormat = time.Now().In(loc).Format("20060102150405")
+		timeFormat = time.Now().In(loc).Format("20060102150405")
 	}
+	filenameParts = append(filenameParts, timeFormat)
 
-	filename = append(filename, defaultFormat)
 	if cfg.File.Suffix != "" {
-		filename = append(filename, cfg.File.Suffix)
+		filenameParts = append(filenameParts, cfg.File.Suffix)
 	}
 
-	filePath := path.Join(cfg.Storage.Path, strings.Join(filename, "-")+".sql.gz")
+	filePath := path.Join(cfg.Storage.Path, strings.Join(filenameParts, "-")+".sql.gz")
 
-	// backup database
+	// Upload the file to S3
 	return s3.UploadFile(ctx, cfg.Storage.Bucket, filePath, content, nil)
 }
 
