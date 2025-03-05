@@ -4,6 +4,7 @@ import (
 	"context"
 	"crypto/tls"
 	"errors"
+	"fmt"
 	"log/slog"
 	"net/http"
 	"net/url"
@@ -74,21 +75,24 @@ func run(cfg *config.Config) cli.ActionFunc {
 			return err
 		}
 
+		// get context
+		appCtx := ctx.Context
+
 		// check bucket exist
-		if exist, err := s3.BucketExists(ctx.Context, cfg.Storage.Bucket); !exist {
+		if exist, err := s3.BucketExists(appCtx, cfg.Storage.Bucket); !exist {
 			if err != nil {
 				return errors.New("bucket not exist or you don't have permission: " + err.Error())
 			}
 
 			// create new bucket
-			if err := s3.CreateBucket(ctx.Context, cfg.Storage.Bucket, cfg.Storage.Region); err != nil {
+			if err := s3.CreateBucket(appCtx, cfg.Storage.Bucket, cfg.Storage.Region); err != nil {
 				return errors.New("can't create bucket: " + err.Error())
 			}
 		}
 
 		// Set lifecycle on bucket or an object prefix.
 		if cfg.Storage.Days > 0 && cfg.Storage.Path != "" {
-			if err := s3.SetLifeCycle(ctx.Context, cfg.Storage.Bucket, &core.LifecycleConfig{
+			if err := s3.SetLifeCycle(appCtx, cfg.Storage.Bucket, &core.LifecycleConfig{
 				Days:   cfg.Storage.Days,
 				Prefix: cfg.Storage.Path,
 			}); err != nil {
@@ -102,48 +106,52 @@ func run(cfg *config.Config) cli.ActionFunc {
 		}
 
 		if cfg.Server.Schedule == "" {
-			slog.Warn("no schedule found, backup database now")
-			return backupDB(ctx.Context, cfg, s3)
+			slog.Info("no schedule found, backup database now")
+			return backupDB(appCtx, cfg, s3)
 		}
 
+		// start cron job
 		c := cron.New()
 		if cfg.Server.Location != "" {
-			loc, err := time.LoadLocation(cfg.Server.Location)
-			if err != nil {
+			if loc, err := time.LoadLocation(cfg.Server.Location); err == nil {
+				c = cron.New(cron.WithLocation(loc))
+			} else {
 				return err
 			}
-			c = cron.New(cron.WithLocation(loc))
 		}
 
-		if _, err := c.AddFunc(cfg.Server.Schedule, func() {
+		// backup task
+		backupTask := func() {
 			slog.Info("start backup database now", "schedule", cfg.Server.Schedule)
-			if err := backupDB(ctx.Context, cfg, s3); err != nil {
+			if err := backupDB(appCtx, cfg, s3); err != nil {
 				slog.Error("can't backup database", "err", err.Error())
 				return
 			}
 			slog.Info("backup database successfully")
-			// call webhook
+
+			// call webhook if configured
 			if cfg.Webhook.URL != "" {
-				if err := callWebhook(
-					ctx.Context,
-					cfg.Webhook.URL,
-					cfg.Webhook.Insecure,
-				); err != nil {
+				if err := callWebhook(appCtx, cfg.Webhook.URL, cfg.Webhook.Insecure); err != nil {
 					slog.Error("can't call webhook", "err", err.Error())
 					return
 				}
 				slog.Info("call webhook successfully")
 			}
-		}); err != nil {
-			slog.Error("crontab Schedule error", "err", err.Error())
-			return err
+		}
+
+		if _, err := c.AddFunc(cfg.Server.Schedule, backupTask); err != nil {
+			return fmt.Errorf("crontab schedule error: %w", err)
 		}
 		c.Start()
+
 		// Register shutdown signal notifications
 		sig := make(chan os.Signal, 1)
 		signal.Notify(sig, syscall.SIGINT, syscall.SIGTERM)
 		<-sig
 		slog.Info("shutting down backup service")
+
+		// stop cron job
+		c.Stop()
 
 		return nil
 	}
