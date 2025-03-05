@@ -207,32 +207,35 @@ func backupDB(ctx context.Context, cfg *config.Config, s3 core.Storage) error {
 func callWebhook(ctx context.Context, target string, insecure bool) error {
 	parsedURL, err := url.Parse(target)
 	if err != nil {
-		return errors.New("invalid webhook URL: " + err.Error())
-	}
-	req, err := http.NewRequestWithContext(ctx, http.MethodPost, parsedURL.String(), nil)
-	if err != nil {
-		return err
+		return fmt.Errorf("invalid webhook URL: %w", err)
 	}
 
-	// Create a custom HTTP client with a default timeout
-	client := &http.Client{
-		Timeout: 10 * time.Second,
+	req, err := http.NewRequestWithContext(ctx, http.MethodPost, parsedURL.String(), nil)
+	if err != nil {
+		return fmt.Errorf("failed to create request: %w", err)
 	}
+
+	// Set a useful User-Agent header
+	req.Header.Set("User-Agent", "Docker-Backup-Database/"+Version)
+
+	transport := http.DefaultTransport.(*http.Transport).Clone()
 	if insecure {
-		// Disable SSL certificate verification if insecure is true
-		client.Transport = &http.Transport{
-			TLSClientConfig: &tls.Config{InsecureSkipVerify: true}, // #nosec
-		}
+		transport.TLSClientConfig = &tls.Config{InsecureSkipVerify: true} // #nosec
+	}
+
+	client := &http.Client{
+		Timeout:   10 * time.Second,
+		Transport: transport,
 	}
 
 	resp, err := client.Do(req)
 	if err != nil {
-		return err
+		return fmt.Errorf("webhook request failed: %w", err)
 	}
 	defer resp.Body.Close()
 
-	if resp.StatusCode != http.StatusOK {
-		return errors.New("failed to call webhook, status code: " + strconv.Itoa(resp.StatusCode))
+	if resp.StatusCode < 200 || resp.StatusCode >= 300 {
+		return fmt.Errorf("webhook returned non-success status code: %d", resp.StatusCode)
 	}
 
 	return nil
